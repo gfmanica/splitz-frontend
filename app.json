@@ -9,31 +9,24 @@
         "userInterfaceStyle": "automatic",
         "newArchEnabled": true,
         "ios": {
-            "supportsTablet": true
+            "supportsTablet": true,
+            "bundleIdentifier": "com.anonymous.splitz-frontend"
         },
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/images/adaptive-icon.png",
-                "backgroundColor": "#ffffff"
+                "backgroundColor": "#f4f4f4"
             }
+        },
+        "splash": {
+            "image": "./assets/images/splash-icon.png",
+            "backgroundColor": "#f4f4f4"
         },
         "web": {
             "bundler": "metro",
             "output": "static",
             "favicon": "./assets/images/favicon.png"
         },
-        "plugins": [
-            "expo-router",
-            [
-                "expo-splash-screen",
-                {
-                    "image": "./assets/images/splash-icon.png",
-                    "imageWidth": 200,
-                    "resizeMode": "contain",
-                    "backgroundColor": "#ffffff"
-                }
-            ]
-        ],
         "experiments": {
             "typedRoutes": true
         }
