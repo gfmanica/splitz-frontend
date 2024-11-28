@@ -1,15 +1,56 @@
-import { Text, View } from 'react-native';
+import { colors } from '@/constants/Colors';
+import { StyleSheet, Text, View } from 'react-native';
+import { User } from 'lucide-react-native';
+import Button from '@/components/ui/button';
+import { Link, router } from 'expo-router';
 
 export default function SettingsScreen() {
     return (
-        <View
-            style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}
-        >
-            <Text>Edit app/index.tsx to edit this screen.</Text>
+        <View style={styles.mainContainer}>
+            <View style={styles.userContainer}>
+                <View style={styles.userIconContainer}>
+                    <User color={colors.white} size={30} />
+                </View>
+
+                <View>
+                    <Text>Gabriel Felipe Manica</Text>
+
+                    <Text style={styles.emailText}>
+                        gabrielfelipemanica@gmail.com
+                    </Text>
+                </View>
+            </View>
+
+            <Button text="Sair" onPress={() => router.replace('/')} />
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    mainContainer: {
+        margin: 16,
+        borderRadius: 16,
+        padding: 16,
+        backgroundColor: colors.white,
+        gap: 16
+    },
+    userContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 16
+    },
+    userIconContainer: {
+        width: 50,
+        height: 50,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.primary[300],
+        borderRadius: '50%',
+        borderColor: colors.primary[400],
+        borderWidth: 1
+    },
+    emailText: {
+        color: colors.neutral[600]
+    }
+});
