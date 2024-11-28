@@ -1,23 +1,15 @@
+import { LogoTitle } from '@/components/ui/logo-title';
 import { colors } from '@/constants/Colors';
 import { Tabs } from 'expo-router';
 
 import { ScrollText, Car, Bolt } from 'lucide-react-native';
-import { Image, StyleSheet } from 'react-native';
-
-const logo = require('@/assets/images/logo.png');
 
 export default function TabsLayout() {
     return (
         <Tabs
             screenOptions={{
                 tabBarActiveTintColor: colors.primary[300],
-                headerTitle: () => (
-                    <Image
-                        source={logo}
-                        style={styles.logo}
-                        resizeMode="contain"
-                    />
-                )
+                headerTitle: () => <LogoTitle />
             }}
         >
             <Tabs.Screen
@@ -48,10 +40,3 @@ export default function TabsLayout() {
         </Tabs>
     );
 }
-
-const styles = StyleSheet.create({
-    logo: {
-        width: 70,
-        height: 30
-    }
-});
