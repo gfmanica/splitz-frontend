@@ -19,5 +19,6 @@ export const colors = {
         1000: '#333333'
     },
     background: '#f4f4f4',
-    black: '#000000'
+    black: '#000000',
+    white: '#ffffff'
 };
