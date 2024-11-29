@@ -1,16 +1,13 @@
-import { StyleSheet, View } from 'react-native';
-import { TitleBlock } from '@/components/bill/list/title-block';
+import { TitleBlock } from '@/components/bill/title-block';
+import { HistoryBlock } from '@/components/bill/history-block';
+import { Screen } from '@/components/ui/screen';
 
 export default function BillListScreen() {
     return (
-        <View style={styles.mainContainer}>
+        <Screen>
             <TitleBlock />
-        </View>
+
+            <HistoryBlock />
+        </Screen>
     );
 }
-
-const styles = StyleSheet.create({
-    mainContainer: {
-        gap: 16
-    }
-});

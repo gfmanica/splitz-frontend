@@ -4,26 +4,29 @@ import { User } from 'lucide-react-native';
 import Button from '@/components/ui/button';
 import { router } from 'expo-router';
 import { Block } from '@/components/ui/block';
+import { Screen } from '@/components/ui/screen';
 
 export default function SettingsScreen() {
     return (
-        <Block>
-            <View style={styles.userContainer}>
-                <View style={styles.userIconContainer}>
-                    <User color={colors.white} size={30} />
+        <Screen>
+            <Block>
+                <View style={styles.userContainer}>
+                    <View style={styles.userIconContainer}>
+                        <User color={colors.white} size={30} />
+                    </View>
+
+                    <View>
+                        <Text>Gabriel Felipe Manica</Text>
+
+                        <Text style={styles.emailText}>
+                            gabrielfelipemanica@gmail.com
+                        </Text>
+                    </View>
                 </View>
 
-                <View>
-                    <Text>Gabriel Felipe Manica</Text>
-
-                    <Text style={styles.emailText}>
-                        gabrielfelipemanica@gmail.com
-                    </Text>
-                </View>
-            </View>
-
-            <Button text="Sair" onPress={() => router.replace('/')} />
-        </Block>
+                <Button text="Sair" onPress={() => router.replace('/')} />
+            </Block>
+        </Screen>
     );
 }
 
