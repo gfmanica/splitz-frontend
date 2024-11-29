@@ -18,6 +18,10 @@ export const colors = {
         900: '#4a4a4a',
         1000: '#333333'
     },
+    info: {
+        100: '#89E9F3',
+        200: '#17D0E4'
+    },
     background: '#f4f4f4',
     black: '#000000',
     white: '#ffffff'

@@ -1,6 +1,7 @@
-import { TitleBlock } from '@/components/bill/title-block';
-import { HistoryBlock } from '@/components/bill/history-block';
+import { TitleBlock } from '@/components/bill/index/title-block';
+import { HistoryBlock } from '@/components/bill/index/history-block';
 import { Screen } from '@/components/ui/screen';
+import { FlutuantAddButton } from '@/components/bill/index/flutuant-add-button';
 
 export default function BillListScreen() {
     return (
@@ -8,6 +9,8 @@ export default function BillListScreen() {
             <TitleBlock />
 
             <HistoryBlock />
+
+            <FlutuantAddButton />
         </Screen>
     );
 }

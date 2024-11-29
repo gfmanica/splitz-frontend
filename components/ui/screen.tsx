@@ -12,6 +12,7 @@ export function Screen({ children }: TScreen) {
 const styles = StyleSheet.create({
     screen: {
         gap: 16,
-        margin: 16
+        margin: 16,
+        flex: 1
     }
 });
