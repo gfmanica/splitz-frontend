@@ -17,7 +17,6 @@ export function Block({ children, style }: TBlock) {
 
 const styles = StyleSheet.create({
     block: {
-        margin: 16,
         borderRadius: 16,
         padding: 16,
         backgroundColor: colors.white,
