@@ -1,4 +1,5 @@
 import { colors } from '@/constants/Colors';
+import { ReactNode } from 'react';
 import {
     Pressable,
     PressableProps,
@@ -8,7 +9,8 @@ import {
 } from 'react-native';
 
 type TButton = {
-    text: string;
+    text?: string;
+    icon?: ReactNode;
     onPress: PressableProps['onPress'];
     textStyle?: TextProps['style'];
     buttonStyle?: PressableProps['style'];
@@ -16,6 +18,7 @@ type TButton = {
 
 export default function Button({
     text,
+    icon,
     onPress,
     textStyle,
     buttonStyle
@@ -25,9 +28,13 @@ export default function Button({
             onPress={onPress}
             style={StyleSheet.flatten([styles.button, buttonStyle])}
         >
-            <Text style={StyleSheet.flatten([styles.text, textStyle])}>
-                {text}
-            </Text>
+            {text && (
+                <Text style={StyleSheet.flatten([styles.text, textStyle])}>
+                    {text}
+                </Text>
+            )}
+
+            {icon}
         </Pressable>
     );
 }
@@ -36,6 +43,7 @@ const styles = StyleSheet.create({
     button: {
         height: 40,
         display: 'flex',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 8,

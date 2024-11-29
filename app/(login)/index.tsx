@@ -35,10 +35,7 @@ export default function LoginScreen() {
                     />
                 </View>
 
-                <Button
-                    text="Entrar"
-                    onPress={() => router.push('/bill-list')}
-                />
+                <Button text="Entrar" onPress={() => router.push('/bill')} />
 
                 <LoginDivider />
 

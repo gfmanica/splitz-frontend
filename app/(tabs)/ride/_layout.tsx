@@ -7,11 +7,11 @@ export default function RideLayout() {
                 headerShown: false
             }}
         >
-            <Stack.Screen name="ride-form" />
+            <Stack.Screen name="index" />
 
-            <Stack.Screen name="ride-list" />
+            <Stack.Screen name="form" />
 
-            <Stack.Screen name="ride-view" />
+            <Stack.Screen name="view" />
         </Stack>
     );
 }

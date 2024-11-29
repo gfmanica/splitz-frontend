@@ -2,11 +2,12 @@ import { colors } from '@/constants/Colors';
 import { StyleSheet, Text, View } from 'react-native';
 import { User } from 'lucide-react-native';
 import Button from '@/components/ui/button';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
+import { Block } from '@/components/ui/block';
 
 export default function SettingsScreen() {
     return (
-        <View style={styles.mainContainer}>
+        <Block>
             <View style={styles.userContainer}>
                 <View style={styles.userIconContainer}>
                     <User color={colors.white} size={30} />
@@ -22,18 +23,11 @@ export default function SettingsScreen() {
             </View>
 
             <Button text="Sair" onPress={() => router.replace('/')} />
-        </View>
+        </Block>
     );
 }
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        margin: 16,
-        borderRadius: 16,
-        padding: 16,
-        backgroundColor: colors.white,
-        gap: 16
-    },
     userContainer: {
         flexDirection: 'row',
         alignItems: 'center',

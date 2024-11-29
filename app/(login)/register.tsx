@@ -50,12 +50,12 @@ export default function RegisterScreen() {
             <Button
                 text="Cadastrar-se"
                 buttonStyle={styles.buttonRegister}
-                onPress={() => router.push('/bill-list')}
+                onPress={() => router.push('/bill')}
             />
 
             <LoginDivider />
 
-            <Button text="Entrar" onPress={() => router.push('/bill-list')} />
+            <Button text="Entrar" onPress={() => router.push('/bill')} />
         </View>
     );
 }

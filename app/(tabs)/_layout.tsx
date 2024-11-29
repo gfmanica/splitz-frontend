@@ -1,7 +1,6 @@
 import { LogoTitle } from '@/components/ui/logo-title';
 import { colors } from '@/constants/Colors';
 import { Tabs } from 'expo-router';
-
 import { ScrollText, Car, Bolt } from 'lucide-react-native';
 
 export default function TabsLayout() {
@@ -13,7 +12,7 @@ export default function TabsLayout() {
             }}
         >
             <Tabs.Screen
-                name="(bill)"
+                name="bill"
                 options={{
                     title: '',
                     tabBarIcon: ({ color }) => (
@@ -23,7 +22,7 @@ export default function TabsLayout() {
             />
 
             <Tabs.Screen
-                name="(ride)"
+                name="ride"
                 options={{
                     title: '',
                     tabBarIcon: ({ color }) => <Car size={28} color={color} />
