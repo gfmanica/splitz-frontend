@@ -13,7 +13,6 @@ export default function LoginLayout() {
                     title: '',
                     headerShown: true,
                     headerBackTitle: 'Realizar login',
-                    headerBackButtonDisplayMode: 'generic',
                     headerTintColor: colors.black,
                     headerTitle: () => <LogoTitle />
                 }}

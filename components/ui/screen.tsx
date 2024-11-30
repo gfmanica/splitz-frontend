@@ -1,18 +1,18 @@
 import { ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 type TScreen = {
     children: ReactNode;
 };
 
 export function Screen({ children }: TScreen) {
-    return <View style={styles.screen}>{children}</View>;
+    return <View style={styles.view}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
-    screen: {
+    view: {
+        flex: 1,
         gap: 16,
-        margin: 16,
-        flex: 1
+        padding: 16
     }
 });

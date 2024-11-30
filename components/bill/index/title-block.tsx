@@ -42,8 +42,6 @@ const styles = StyleSheet.create({
     titleAddButton: {
         width: 72,
         height: 34,
-        borderRadius: 36,
-        borderColor: colors.primary[400],
-        borderWidth: 1
+        borderRadius: 36
     }
 });

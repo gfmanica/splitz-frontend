@@ -1,10 +1,14 @@
+import { LogoTitle } from '@/components/ui/logo-title';
+import { colors } from '@/constants/Colors';
 import { Stack } from 'expo-router';
 
 export default function RideLayout() {
     return (
         <Stack
             screenOptions={{
-                headerShown: false
+                headerTitle: () => <LogoTitle />,
+                headerTintColor: colors.black,
+                headerBackTitle: 'Voltar'
             }}
         >
             <Stack.Screen name="index" />

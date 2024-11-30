@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Block } from '@/components/ui/block';
 import { Trash, Pencil, Eye } from 'lucide-react-native';
 import Button from '@/components/ui/button';
+import { router } from 'expo-router';
 
 export function HistoryBlock() {
     return (
@@ -11,7 +12,7 @@ export function HistoryBlock() {
             <Title variant="h2" text="Histórico" />
 
             {Array.from({ length: 5 }).map((_, index) => (
-                <View style={{ gap: 16 }}>
+                <View key={index} style={{ gap: 16, marginTop: 8 }}>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -19,7 +20,12 @@ export function HistoryBlock() {
                             alignItems: 'center'
                         }}
                     >
-                        <View style={{ gap: 8, flex: 1 }}>
+                        <View
+                            style={{
+                                gap: 8,
+                                flex: 1
+                            }}
+                        >
                             <Text>Sem título 1</Text>
 
                             <View
@@ -41,31 +47,31 @@ export function HistoryBlock() {
                         <View style={{ flexDirection: 'row' }}>
                             <Button
                                 buttonStyle={styles.deleteButton}
+                                onPress={() => router.push('/bill/view')}
                                 icon={
                                     <Eye color={colors.info[200]} size={20} />
                                 }
-                                onPress={() => {}}
                             />
                             <Button
                                 buttonStyle={styles.deleteButton}
+                                onPress={() => router.push('/bill/form')}
                                 icon={
                                     <Pencil
                                         color={colors.neutral[600]}
                                         size={20}
                                     />
                                 }
-                                onPress={() => {}}
                             />
 
                             <Button
                                 buttonStyle={styles.deleteButton}
+                                onPress={() => {}}
                                 icon={
                                     <Trash
                                         color={colors.primary[300]}
                                         size={20}
                                     />
                                 }
-                                onPress={() => {}}
                             />
                         </View>
                     </View>

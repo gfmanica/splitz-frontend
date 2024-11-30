@@ -1,4 +1,3 @@
-import { LogoTitle } from '@/components/ui/logo-title';
 import { colors } from '@/constants/Colors';
 import { Tabs } from 'expo-router';
 import { ScrollText, Car, Bolt } from 'lucide-react-native';
@@ -7,8 +6,11 @@ export default function TabsLayout() {
     return (
         <Tabs
             screenOptions={{
+                headerShown: false,
                 tabBarActiveTintColor: colors.primary[300],
-                headerTitle: () => <LogoTitle />
+                tabBarStyle: {
+                    paddingTop: 8
+                }
             }}
         >
             <Tabs.Screen
