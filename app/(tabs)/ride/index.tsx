@@ -1,15 +1,13 @@
-import { Text, View } from 'react-native';
+import { HistoryBlock } from '@/components/ride/index/history-block';
+import { TitleBlock } from '@/components/ride/index/title-block';
+import { Screen } from '@/components/ui/screen';
 
 export default function RideListScreen() {
     return (
-        <View
-            style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}
-        >
-            <Text>Edit app/index.tsx to edit this screen.</Text>
-        </View>
+        <Screen>
+            <TitleBlock />
+
+            <HistoryBlock />
+        </Screen>
     );
 }

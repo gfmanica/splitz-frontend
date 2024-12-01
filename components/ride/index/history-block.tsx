@@ -35,6 +35,14 @@ export function HistoryBlock() {
                             <Text style={{ color: colors.neutral[600] }}>
                                 Pessoas: 5
                             </Text>
+
+                            <Text style={{ color: colors.neutral[600] }}>
+                                Início: 27/11/2024
+                            </Text>
+
+                            <Text style={{ color: colors.neutral[600] }}>
+                                Fim: 27/12/2024
+                            </Text>
                         </View>
 
                         <View style={{ flexDirection: 'row', gap: 8 }}>
