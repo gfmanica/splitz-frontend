@@ -9,6 +9,7 @@ export default function TabsLayout() {
                 headerShown: false,
                 tabBarActiveTintColor: colors.primary[300],
                 tabBarStyle: {
+                    borderTopColor: colors.neutral[400],
                     paddingTop: 8
                 }
             }}

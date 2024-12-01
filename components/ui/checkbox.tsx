@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
 import { Check } from 'lucide-react-native';
 import { colors } from '@/constants/Colors';
 
@@ -9,15 +9,11 @@ export default function Checkbox() {
     return (
         <View style={styles.container}>
             <Pressable
-                style={[styles.checkbox]}
+                style={[styles.checkbox, isChecked && styles.checkedCheckbox]}
                 onPress={() => setIsChecked(!isChecked)}
             >
                 {isChecked && (
-                    <Check
-                        size={16}
-                        color={colors.neutral[700]}
-                        strokeWidth={3}
-                    />
+                    <Check size={16} color={colors.info[600]} strokeWidth={3} />
                 )}
             </Pressable>
         </View>
@@ -30,11 +26,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    checkedCheckbox: {
+        backgroundColor: colors.info[100],
+        borderColor: colors.info[200]
+    },
     checkbox: {
         width: 20,
         height: 20,
         borderWidth: 2,
-        borderColor: colors.neutral[700],
+        backgroundColor: colors.neutral[200],
+        borderColor: colors.neutral[300],
         borderRadius: 4,
         justifyContent: 'center',
         alignItems: 'center'

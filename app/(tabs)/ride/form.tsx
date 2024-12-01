@@ -1,15 +1,13 @@
-import { Text, View } from 'react-native';
+import { Screen } from '@/components/ui/screen';
+import { MainBlock } from '@/components/ride/form/main-block';
+import { SaveBlock } from '@/components/ride/form/save-block';
 
 export default function RideFormScreen() {
     return (
-        <View
-            style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}
-        >
-            <Text>Edit app/index.tsx to edit this screen.</Text>
-        </View>
+        <Screen>
+            <MainBlock />
+
+            <SaveBlock />
+        </Screen>
     );
 }

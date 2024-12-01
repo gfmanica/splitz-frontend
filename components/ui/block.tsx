@@ -8,11 +8,7 @@ type TBlock = {
 };
 
 export function Block({ children, style }: TBlock) {
-    return (
-        <View style={StyleSheet.flatten([styles.block, style])}>
-            {children}
-        </View>
-    );
+    return <View style={[styles.block, style]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({

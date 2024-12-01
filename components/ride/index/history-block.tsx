@@ -48,14 +48,14 @@ export function HistoryBlock() {
                         <View style={{ flexDirection: 'row', gap: 8 }}>
                             <Button
                                 buttonStyle={styles.deleteButton}
-                                onPress={() => router.push('/bill/view')}
+                                onPress={() => router.push('/ride/view')}
                                 icon={
                                     <Eye color={colors.info[200]} size={24} />
                                 }
                             />
                             <Button
                                 buttonStyle={styles.deleteButton}
-                                onPress={() => router.push('/bill/form')}
+                                onPress={() => router.push('/ride/form')}
                                 icon={
                                     <Pencil
                                         color={colors.neutral[600]}

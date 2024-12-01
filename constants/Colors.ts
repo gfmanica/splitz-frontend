@@ -20,7 +20,8 @@ export const colors = {
     },
     info: {
         100: '#89E9F3',
-        200: '#17D0E4'
+        200: '#17D0E4',
+        600: '#0F808D'
     },
     background: '#f4f4f4',
     black: '#000000',

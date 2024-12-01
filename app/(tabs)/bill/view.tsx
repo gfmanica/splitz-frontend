@@ -9,7 +9,9 @@ export default function BillViewScreen() {
         <Screen>
             <Block>
                 <Title variant="h1" text="Conta 1" />
+            </Block>
 
+            <Block>
                 <GridView />
             </Block>
 
