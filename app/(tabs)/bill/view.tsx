@@ -1,13 +1,19 @@
+import { GridView } from '@/components/bill/view/grid-view';
+import { SummaryBlock } from '@/components/bill/view/summary-block';
 import { Block } from '@/components/ui/block';
 import { Screen } from '@/components/ui/screen';
-import { Text } from 'react-native';
+import { Title } from '@/components/ui/title';
 
 export default function BillViewScreen() {
     return (
         <Screen>
             <Block>
-                <Text>Conta 1</Text>
+                <Title variant="h1" text="Conta 1" />
+
+                <GridView />
             </Block>
+
+            <SummaryBlock />
         </Screen>
     );
 }
