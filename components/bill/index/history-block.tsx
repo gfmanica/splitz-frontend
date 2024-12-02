@@ -1,12 +1,23 @@
+import React, { useState } from 'react';
 import { Title } from '@/components/ui/title';
 import { colors } from '@/constants/Colors';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native';
 import { Block } from '@/components/ui/block';
 import { Trash, Pencil, Eye } from 'lucide-react-native';
 import Button from '@/components/ui/button';
 import { router } from 'expo-router';
 
 export function HistoryBlock() {
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const handleDeletePress = () => {
+        setModalVisible(true);
+    };
+
+    const confirmDelete = () => {
+        setModalVisible(false);
+    };
+
     return (
         <Block style={styles.block}>
             <Title variant="h2" text="Histórico" />
@@ -55,10 +66,9 @@ export function HistoryBlock() {
                                     />
                                 }
                             />
-
                             <Button
                                 buttonStyle={styles.deleteButton}
-                                onPress={() => {}}
+                                onPress={handleDeletePress}
                                 icon={
                                     <Trash
                                         color={colors.primary[300]}
@@ -72,6 +82,35 @@ export function HistoryBlock() {
                     {index !== 4 && <View style={styles.divider} />}
                 </View>
             ))}
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalView}>
+                        <Text>Tem certeza que deseja excluir este item?</Text>
+
+                        <View style={styles.modalButtons}>
+                            <Button
+                                text="Cancelar"
+                                buttonStyle={[styles.buttonCancel]}
+                                onPress={() => setModalVisible(!modalVisible)}
+                            />
+
+                            <Button
+                                text="Confirmar"
+                                buttonStyle={[styles.buttonConfirm]}
+                                onPress={confirmDelete}
+                            />
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </Block>
     );
 }
@@ -104,5 +143,46 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 1,
         backgroundColor: colors.neutral[300]
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.1)'
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 16,
+        gap: 16,
+        alignItems: 'stretch',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    modalButtons: {
+        flexDirection: 'row',
+        gap: 16,
+        justifyContent: 'flex-end',
+        width: '100%'
+    },
+    buttonCancel: {
+        backgroundColor: colors.primary[500],
+        width: 100
+    },
+    buttonConfirm: {
+        backgroundColor: colors.primary[300],
+        width: 100
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center'
     }
 });
