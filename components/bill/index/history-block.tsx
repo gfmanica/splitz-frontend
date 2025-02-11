@@ -6,111 +6,94 @@ import { Block } from '@/components/ui/block';
 import { Trash, Pencil, Eye } from 'lucide-react-native';
 import Button from '@/components/ui/button';
 import { router } from 'expo-router';
+import { Axios } from '@/lib/axios';
+import { useQuery } from '@tanstack/react-query';
+import { money } from '@/util/format';
 
 export function HistoryBlock() {
-    const [modalVisible, setModalVisible] = useState(false);
-
-    const handleDeletePress = () => {
-        setModalVisible(true);
-    };
-
-    const confirmDelete = () => {
-        setModalVisible(false);
-    };
+    const { data, isFetching } = useQuery({
+        queryKey: ['bills'],
+        queryFn: () => Axios.get('/bill')
+    });
 
     return (
         <Block style={styles.block}>
             <Title variant="h2" text="Histórico" />
 
-            {Array.from({ length: 5 }).map((_, index) => (
-                <View key={index} style={{ gap: 16, marginTop: 8 }}>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            gap: 16,
-                            alignItems: 'center'
-                        }}
-                    >
+            {isFetching && (
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={{ color: colors.neutral[600] }}>
+                        Carregando ...
+                    </Text>
+                </View>
+            )}
+
+            {!isFetching &&
+                data?.data.map((item: any, index: number) => (
+                    <View key={item.idBill} style={{ gap: 16, marginTop: 8 }}>
                         <View
                             style={{
-                                gap: 8,
-                                flex: 1
+                                flexDirection: 'row',
+                                gap: 16,
+                                alignItems: 'center'
                             }}
                         >
-                            <Text>Sem título 1</Text>
+                            <View
+                                style={{
+                                    gap: 8,
+                                    flex: 1
+                                }}
+                            >
+                                <Text>{item.dsBill}</Text>
 
-                            <Text style={{ color: colors.neutral[600] }}>
-                                Total: R$ 240,50
-                            </Text>
+                                <Text style={{ color: colors.neutral[600] }}>
+                                    Total: {money(item.vlBill)}
+                                </Text>
 
-                            <Text style={{ color: colors.neutral[600] }}>
-                                Pessoas: 5
-                            </Text>
+                                <Text style={{ color: colors.neutral[600] }}>
+                                    Pessoas: {item.qtPerson}
+                                </Text>
+                            </View>
+
+                            <View style={{ flexDirection: 'row', gap: 8 }}>
+                                <Button
+                                    buttonStyle={styles.deleteButton}
+                                    onPress={() => router.push('/bill/view')}
+                                    icon={
+                                        <Eye
+                                            color={colors.info[200]}
+                                            size={24}
+                                        />
+                                    }
+                                />
+                                <Button
+                                    buttonStyle={styles.deleteButton}
+                                    onPress={() => router.push('/bill/form')}
+                                    icon={
+                                        <Pencil
+                                            color={colors.neutral[600]}
+                                            size={24}
+                                        />
+                                    }
+                                />
+                                <Button
+                                    buttonStyle={styles.deleteButton}
+                                    onPress={() => {}}
+                                    icon={
+                                        <Trash
+                                            color={colors.primary[300]}
+                                            size={24}
+                                        />
+                                    }
+                                />
+                            </View>
                         </View>
 
-                        <View style={{ flexDirection: 'row', gap: 8 }}>
-                            <Button
-                                buttonStyle={styles.deleteButton}
-                                onPress={() => router.push('/bill/view')}
-                                icon={
-                                    <Eye color={colors.info[200]} size={24} />
-                                }
-                            />
-                            <Button
-                                buttonStyle={styles.deleteButton}
-                                onPress={() => router.push('/bill/form')}
-                                icon={
-                                    <Pencil
-                                        color={colors.neutral[600]}
-                                        size={24}
-                                    />
-                                }
-                            />
-                            <Button
-                                buttonStyle={styles.deleteButton}
-                                onPress={handleDeletePress}
-                                icon={
-                                    <Trash
-                                        color={colors.primary[300]}
-                                        size={24}
-                                    />
-                                }
-                            />
-                        </View>
+                        {index !== data?.data.length - 1 && (
+                            <View style={styles.divider} />
+                        )}
                     </View>
-
-                    {index !== 4 && <View style={styles.divider} />}
-                </View>
-            ))}
-
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible);
-                }}
-            >
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalView}>
-                        <Text>Tem certeza que deseja excluir este item?</Text>
-
-                        <View style={styles.modalButtons}>
-                            <Button
-                                text="Cancelar"
-                                buttonStyle={[styles.buttonCancel]}
-                                onPress={() => setModalVisible(!modalVisible)}
-                            />
-
-                            <Button
-                                text="Confirmar"
-                                buttonStyle={[styles.buttonConfirm]}
-                                onPress={confirmDelete}
-                            />
-                        </View>
-                    </View>
-                </View>
-            </Modal>
+                ))}
         </Block>
     );
 }

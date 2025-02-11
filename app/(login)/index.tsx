@@ -105,6 +105,7 @@ export default function LoginScreen() {
                 )}
 
                 <Button text="Entrar" onPress={handleSubmit(onSubmit)} />
+                <Button text="Entrar" onPress={() => router.push('/bill')} />
 
                 <LoginDivider />
 
