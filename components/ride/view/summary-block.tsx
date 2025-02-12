@@ -1,19 +1,33 @@
 import { colors } from '@/constants/Colors';
+import { Ride } from '@/types/types';
+import { money } from '@/util/format';
 import { StyleSheet, Text, View } from 'react-native';
 
-export function SummaryBlock() {
+export function SummaryBlock({ data }: { data: Ride }) {
+    const vlTotal = data?.payments.reduce(
+        (acc, payment) => payment.vlPayment + acc,
+        0
+    );
+
+    const vlTotalPayed = data?.payments.reduce(
+        (acc, payment) => (payment.fgPayed ? payment.vlPayment : 0) + acc,
+        0
+    );
+
+    const vlTotalRemaining = vlTotal - vlTotalPayed;
+
     return (
         <View style={styles.block}>
             <View style={styles.labelContainer}>
                 <Text style={styles.labelText}>Faltam</Text>
 
-                <Text style={styles.valueText}>R$ 54,00</Text>
+                <Text style={styles.valueText}>{money(vlTotalRemaining)}</Text>
             </View>
 
             <View style={styles.labelContainer}>
                 <Text style={styles.labelText}>Total pago</Text>
 
-                <Text style={styles.valueText}>R$ 14,00</Text>
+                <Text style={styles.valueText}>{money(vlTotalPayed)}</Text>
             </View>
         </View>
     );
