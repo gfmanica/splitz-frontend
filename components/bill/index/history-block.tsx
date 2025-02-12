@@ -56,7 +56,7 @@ export function HistoryBlock() {
                                 </Text>
                             </View>
 
-                            <View style={{ flexDirection: 'row', gap: 8 }}>
+                            <View style={{ flexDirection: 'row', gap: 16 }}>
                                 <Button
                                     unstyled
                                     onPress={() => router.push('/bill/form')}
