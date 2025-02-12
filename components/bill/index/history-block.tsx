@@ -4,11 +4,12 @@ import { colors } from '@/constants/Colors';
 import { StyleSheet, Text, View, Modal, TouchableOpacity } from 'react-native';
 import { Block } from '@/components/ui/block';
 import { Trash, Pencil, Eye } from 'lucide-react-native';
-import Button from '@/components/ui/button';
 import { router } from 'expo-router';
 import { Axios } from '@/lib/axios';
 import { useQuery } from '@tanstack/react-query';
 import { money } from '@/util/format';
+import { DeleteButton } from '@/components/ui/delete-button';
+import { Button } from 'tamagui';
 
 export function HistoryBlock() {
     const { data, isFetching } = useQuery({
@@ -57,8 +58,8 @@ export function HistoryBlock() {
 
                             <View style={{ flexDirection: 'row', gap: 8 }}>
                                 <Button
-                                    buttonStyle={styles.deleteButton}
-                                    onPress={() => router.push('/bill/view')}
+                                    unstyled
+                                    onPress={() => router.push('/bill/form')}
                                     icon={
                                         <Eye
                                             color={colors.info[200]}
@@ -66,8 +67,9 @@ export function HistoryBlock() {
                                         />
                                     }
                                 />
+
                                 <Button
-                                    buttonStyle={styles.deleteButton}
+                                    unstyled
                                     onPress={() => router.push('/bill/form')}
                                     icon={
                                         <Pencil
@@ -76,15 +78,10 @@ export function HistoryBlock() {
                                         />
                                     }
                                 />
-                                <Button
-                                    buttonStyle={styles.deleteButton}
-                                    onPress={() => {}}
-                                    icon={
-                                        <Trash
-                                            color={colors.primary[300]}
-                                            size={24}
-                                        />
-                                    }
+
+                                <DeleteButton
+                                    url={`/bill/${item.idBill}`}
+                                    queryKey={'bills'}
                                 />
                             </View>
                         </View>

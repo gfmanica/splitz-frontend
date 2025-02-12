@@ -11,7 +11,7 @@ import {
 type TButton = {
     text?: string;
     icon?: ReactNode;
-    onPress: PressableProps['onPress'];
+    onPress?: PressableProps['onPress'];
     textStyle?: TextProps['style'];
     buttonStyle?: PressableProps['style'];
 };
@@ -25,7 +25,7 @@ export default function Button({
 }: TButton) {
     return (
         <Pressable
-            onPress={onPress}
+            onPress={onPress ? onPress : () => {}}
             style={StyleSheet.flatten([styles.button, buttonStyle])}
         >
             {text && (

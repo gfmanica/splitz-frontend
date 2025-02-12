@@ -3,19 +3,18 @@ import { colors } from '@/constants/Colors';
 import { StyleSheet, Text, View } from 'react-native';
 import { Block } from '@/components/ui/block';
 import { Trash, Pencil, Eye } from 'lucide-react-native';
-import Button from '@/components/ui/button';
 import { router } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { Axios } from '@/lib/axios';
 import { formatDate, money } from '@/util/format';
+import { DeleteButton } from '../../ui/delete-button';
+import { Button } from 'tamagui';
 
 export function HistoryBlock() {
     const { data, isFetching } = useQuery({
         queryKey: ['rides'],
         queryFn: () => Axios.get('/ride')
     });
-
-    console.log(data?.data);
 
     return (
         <Block style={styles.block}>
@@ -62,8 +61,8 @@ export function HistoryBlock() {
 
                             <View style={{ flexDirection: 'row', gap: 8 }}>
                                 <Button
-                                    buttonStyle={styles.deleteButton}
-                                    onPress={() => router.push('/bill/view')}
+                                    unstyled
+                                    onPress={() => router.push('/ride/form')}
                                     icon={
                                         <Eye
                                             color={colors.info[200]}
@@ -71,9 +70,10 @@ export function HistoryBlock() {
                                         />
                                     }
                                 />
+
                                 <Button
-                                    buttonStyle={styles.deleteButton}
-                                    onPress={() => router.push('/bill/form')}
+                                    unstyled
+                                    onPress={() => router.push('/ride/form')}
                                     icon={
                                         <Pencil
                                             color={colors.neutral[600]}
@@ -81,15 +81,10 @@ export function HistoryBlock() {
                                         />
                                     }
                                 />
-                                <Button
-                                    buttonStyle={styles.deleteButton}
-                                    onPress={() => {}}
-                                    icon={
-                                        <Trash
-                                            color={colors.primary[300]}
-                                            size={24}
-                                        />
-                                    }
+
+                                <DeleteButton
+                                    url={`/ride/${item.idRide}`}
+                                    queryKey={'rides'}
                                 />
                             </View>
                         </View>
