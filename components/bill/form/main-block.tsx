@@ -7,6 +7,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { Plus, Minus } from 'lucide-react-native';
 import { useFormContext, Controller } from 'react-hook-form';
 import { useLocalSearchParams } from 'expo-router';
+import { NumberField } from '@/components/ui/number-field';
 
 export function MainBlock() {
     const { id } = useLocalSearchParams();
@@ -48,22 +49,10 @@ export function MainBlock() {
                         control={control}
                         name="vlBill"
                         render={({ field: { value, onChange } }) => (
-                            <TextInput
-                                keyboardType="numeric"
+                            <NumberField
                                 style={styles.spinnerInput}
-                                value={String(value).replace('.', ',')}
-                                onChangeText={(text) => {
-                                    if (
-                                        text.endsWith(',') ||
-                                        text.endsWith('.')
-                                    ) {
-                                        onChange(text);
-                                    } else {
-                                        onChange(
-                                            Number(text.replace(',', '.'))
-                                        );
-                                    }
-                                }}
+                                value={value}
+                                onChange={onChange}
                             />
                         )}
                     />
@@ -92,22 +81,11 @@ export function MainBlock() {
                         control={control}
                         name="qtPerson"
                         render={({ field: { value, onChange } }) => (
-                            <TextInput
-                                keyboardType="number-pad"
+                            <NumberField
                                 style={styles.spinnerInput}
-                                value={String(value).replace('.', ',')}
-                                onChangeText={(text) => {
-                                    if (
-                                        text.endsWith(',') ||
-                                        text.endsWith('.')
-                                    ) {
-                                        onChange(text);
-                                    } else {
-                                        onChange(
-                                            Number(text.replace(',', '.'))
-                                        );
-                                    }
-                                }}
+                                keyboardType="number-pad"
+                                value={value}
+                                onChange={onChange}
                             />
                         )}
                     />

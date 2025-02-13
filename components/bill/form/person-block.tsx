@@ -7,6 +7,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { Plus, Minus, Trash } from 'lucide-react-native';
 import { useFormContext, Controller, useFieldArray } from 'react-hook-form';
 import { Button } from 'tamagui';
+import { NumberField } from '@/components/ui/number-field';
 
 export function PersonBlock() {
     const { control } = useFormContext<any>();
@@ -55,13 +56,10 @@ export function PersonBlock() {
                                 control={control}
                                 name={`payments.${index}.vlPayment`}
                                 render={({ field: { value, onChange } }) => (
-                                    <TextInput
-                                        keyboardType="numeric"
+                                    <NumberField
                                         style={styles.textInput}
-                                        value={String(value)}
-                                        onChangeText={(text) =>
-                                            onChange(Number(text))
-                                        }
+                                        value={value}
+                                        onChange={onChange}
                                     />
                                 )}
                             />
