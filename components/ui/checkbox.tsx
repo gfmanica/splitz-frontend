@@ -3,14 +3,23 @@ import { View, Pressable, StyleSheet } from 'react-native';
 import { Check } from 'lucide-react-native';
 import { colors } from '@/constants/Colors';
 
-export default function Checkbox() {
-    const [isChecked, setIsChecked] = useState(false);
+export default function Checkbox({
+    value,
+    onChange
+}: {
+    value: boolean;
+    onChange: (value: boolean) => void;
+}) {
+    const [isChecked, setIsChecked] = useState(value);
 
     return (
         <View style={styles.container}>
             <Pressable
                 style={[styles.checkbox, isChecked && styles.checkedCheckbox]}
-                onPress={() => setIsChecked(!isChecked)}
+                onPress={() => {
+                    setIsChecked(!isChecked);
+                    onChange(!isChecked);
+                }}
             >
                 {isChecked && (
                     <Check size={16} color={colors.info[600]} strokeWidth={3} />

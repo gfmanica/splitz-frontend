@@ -8,16 +8,23 @@ import { Axios } from '@/lib/axios';
 import { Bill } from '@/types/types';
 import { useQuery } from '@tanstack/react-query';
 import { useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
 export default function BillViewScreen() {
     const { id } = useLocalSearchParams();
+    const [bill, setBill] = useState<Bill | null>(null);
 
     const { data, isFetching } = useQuery<Bill>({
         queryKey: ['bill', id],
         queryFn: () => Axios.get(`/bill/${id}`).then((res) => res.data),
-        enabled: Boolean(id)
+        enabled: Boolean(id),
+        gcTime: 0
     });
+
+    useEffect(() => {
+        if (data) setBill(data);
+    }, [data]);
 
     return (
         <View style={{ flex: 1 }}>
@@ -35,7 +42,7 @@ export default function BillViewScreen() {
                 </View>
             )}
 
-            {!isFetching && (
+            {!isFetching && bill && (
                 <>
                     <ScrollView>
                         <View
@@ -51,12 +58,12 @@ export default function BillViewScreen() {
                             </Block>
 
                             <Block>
-                                <GridView />
+                                <GridView bill={bill} setBill={setBill} />
                             </Block>
                         </View>
                     </ScrollView>
-                    
-                    <SummaryBlock />
+
+                    <SummaryBlock bill={bill} />
                 </>
             )}
         </View>

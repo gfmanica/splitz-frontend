@@ -49,6 +49,8 @@ export default function BillFormScreen() {
         }
     });
 
+    console.log(methods.formState.errors);
+
     useEffect(() => methods.reset(data), [data]);
 
     const mutation = useMutation({

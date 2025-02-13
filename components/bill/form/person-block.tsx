@@ -19,6 +19,8 @@ export function PersonBlock() {
         name: 'payments'
     });
 
+    const filteredFields = fields.filter((item: any) => item.fgCustomPayment);
+
     return (
         <Block>
             <View style={styles.titleTextContainer}>
@@ -26,11 +28,17 @@ export function PersonBlock() {
                 <ButtonUi
                     buttonStyle={styles.titleAddButton}
                     icon={<Plus size={28} color={colors.white} />}
-                    onPress={() => append({ dsPerson: '', vlPayment: 0 })}
+                    onPress={() =>
+                        append({
+                            dsPerson: '',
+                            vlPayment: 0,
+                            fgCustomPayment: true
+                        })
+                    }
                 />
             </View>
 
-            {fields.map((field, index) => (
+            {filteredFields.map((field, index) => (
                 <View key={field.id} style={{ marginBottom: 16 }}>
                     <View
                         style={{
