@@ -59,7 +59,12 @@ export function HistoryBlock() {
                             <View style={{ flexDirection: 'row', gap: 16 }}>
                                 <Button
                                     unstyled
-                                    onPress={() => router.push('/bill/form')}
+                                    onPress={() =>
+                                        router.push({
+                                            pathname: '/bill/view',
+                                            params: { id: item.idBill }
+                                        })
+                                    }
                                     icon={
                                         <Eye
                                             color={colors.info[200]}

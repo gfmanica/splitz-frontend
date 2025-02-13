@@ -39,8 +39,6 @@ export default function BillFormScreen() {
         enabled: Boolean(id)
     });
 
-    console.log(id);
-
     const methods = useForm<BillFormValues>({
         resolver: zodResolver(billSchema),
         defaultValues: {
