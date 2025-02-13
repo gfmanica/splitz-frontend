@@ -80,6 +80,8 @@ export function HistoryBlock() {
                                 />
 
                                 <DeleteButton
+                                    title="Excluir conta"
+                                    description="Ao confirmar, a conta será excluída permanentemente."
                                     url={`/bill/${item.idBill}`}
                                     queryKey={'bills'}
                                 />

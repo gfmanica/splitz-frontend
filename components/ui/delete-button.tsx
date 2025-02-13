@@ -7,10 +7,14 @@ import { AlertDialog, Button } from 'tamagui';
 
 export function DeleteButton({
     url,
-    queryKey
+    queryKey,
+    title,
+    description
 }: {
     url: string;
     queryKey: string;
+    title: string;
+    description: string;
 }) {
     const queryClient = useQueryClient();
 

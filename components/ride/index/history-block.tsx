@@ -88,6 +88,8 @@ export function HistoryBlock() {
                                 />
 
                                 <DeleteButton
+                                    title="Excluir carona"
+                                    description="Ao confirmar, a carona será excluída permanentemente."
                                     url={`/ride/${item.idRide}`}
                                     queryKey={'rides'}
                                 />
