@@ -10,7 +10,10 @@ import { Button } from 'tamagui';
 import { NumberField } from '@/components/ui/number-field';
 
 export function PersonBlock() {
-    const { control } = useFormContext<any>();
+    const {
+        control,
+        formState: { errors }
+    } = useFormContext<any>();
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'payments'
@@ -33,7 +36,7 @@ export function PersonBlock() {
                         style={{
                             flexDirection: 'row',
                             gap: 16,
-                            alignItems: 'center'
+                            alignItems: 'flex-start'
                         }}
                     >
                         <View style={{ gap: 8, flex: 1 }}>
@@ -49,6 +52,14 @@ export function PersonBlock() {
                                     />
                                 )}
                             />
+                            {(errors.payments as any)?.[index]?.dsPerson && (
+                                <Text style={styles.errorText}>
+                                    {String(
+                                        (errors.payments as any)[index].dsPerson
+                                            .message
+                                    )}
+                                </Text>
+                            )}
                         </View>
                         <View style={{ gap: 8, flex: 1 }}>
                             <Text>Valor</Text>
@@ -63,15 +74,28 @@ export function PersonBlock() {
                                     />
                                 )}
                             />
+                            {(errors.payments as any)?.[index]?.vlPayment && (
+                                <Text style={styles.errorText}>
+                                    {String(
+                                        (errors.payments as any)[index]
+                                            .vlPayment.message
+                                    )}
+                                </Text>
+                            )}
                         </View>
 
-                        <Button
-                            unstyled
-                            onPress={() => remove(index)}
-                            icon={
-                                <Trash color={colors.primary[300]} size={24} />
-                            }
-                        />
+                        <View style={{ marginTop: 32 }}>
+                            <Button
+                                unstyled
+                                onPress={() => remove(index)}
+                                icon={
+                                    <Trash
+                                        color={colors.primary[300]}
+                                        size={24}
+                                    />
+                                }
+                            />
+                        </View>
                     </View>
                 </View>
             ))}
@@ -115,5 +139,10 @@ const styles = StyleSheet.create({
         borderRightWidth: 0,
         borderColor: colors.neutral[300],
         textAlign: 'center'
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 4
     }
 });

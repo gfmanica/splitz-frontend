@@ -11,18 +11,18 @@ import { colors } from '@/constants/Colors';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Alert } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import { useEffect } from 'react';
 
 const billSchema = z.object({
     idBill: z.number().optional(),
     dsBill: z.string().min(1, 'Nome é obrigatório'),
-    vlBill: z.number().min(0, 'Valor deve ser no mínimo 0'),
-    qtPerson: z.number().min(0, 'Quantidade deve ser no mínimo 0'),
+    vlBill: z.number().min(0.01, 'Valor deve ser no mínimo 0,01'),
+    qtPerson: z.number().min(0.01, 'Quantidade deve ser no mínimo 0,01'),
     payments: z.array(
         z.object({
             dsPerson: z.string().min(1, 'Nome da pessoa é obrigatório'),
-            vlPayment: z.number().min(0, 'Valor deve ser no mínimo 0')
+            vlPayment: z.number().min(0.01, 'Valor deve ser no mínimo 0,01')
         })
     )
 });
@@ -71,7 +71,7 @@ export default function BillFormScreen() {
     });
 
     return (
-        <Screen>
+        <View style={{ flex: 1 }}>
             {isFetching && (
                 <View
                     style={{
@@ -88,13 +88,24 @@ export default function BillFormScreen() {
 
             {!isFetching && (
                 <FormProvider {...methods}>
-                    <MainBlock />
+                    <ScrollView>
+                        <View
+                            style={{
+                                flex: 1,
+                                padding: 16,
+                                gap: 16,
+                                marginBottom: 64
+                            }}
+                        >
+                            <MainBlock />
 
-                    <PersonBlock />
+                            <PersonBlock />
+                        </View>
+                    </ScrollView>
 
                     <SaveBlock onSubmit={onSubmit} />
                 </FormProvider>
             )}
-        </Screen>
+        </View>
     );
 }

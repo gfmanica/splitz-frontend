@@ -11,7 +11,12 @@ import { NumberField } from '@/components/ui/number-field';
 
 export function MainBlock() {
     const { id } = useLocalSearchParams();
-    const { control, setValue, watch } = useFormContext<any>();
+    const {
+        control,
+        setValue,
+        watch,
+        formState: { errors }
+    } = useFormContext<any>();
     const vlBill = watch('vlBill');
     const qtPerson = watch('qtPerson');
 
@@ -33,6 +38,11 @@ export function MainBlock() {
                         />
                     )}
                 />
+                {errors.dsBill && (
+                    <Text style={styles.errorText}>
+                        {String(errors.dsBill?.message)}
+                    </Text>
+                )}
             </View>
 
             <View style={{ gap: 8 }}>
@@ -41,7 +51,12 @@ export function MainBlock() {
                 <View style={{ flexDirection: 'row' }}>
                     <Button
                         buttonStyle={styles.minusButton}
-                        onPress={() => setValue('vlBill', Number(vlBill) - 1)}
+                        onPress={() =>
+                            setValue(
+                                'vlBill',
+                                Number(vlBill) - 1 < 0 ? 0 : Number(vlBill) - 1
+                            )
+                        }
                         icon={<Minus color={colors.white} />}
                     />
 
@@ -63,6 +78,11 @@ export function MainBlock() {
                         icon={<Plus color={colors.white} />}
                     />
                 </View>
+                {errors.vlBill && (
+                    <Text style={styles.errorText}>
+                        {String(errors.vlBill?.message)}
+                    </Text>
+                )}
             </View>
 
             <View style={{ gap: 8 }}>
@@ -72,7 +92,12 @@ export function MainBlock() {
                     <Button
                         buttonStyle={styles.minusButton}
                         onPress={() =>
-                            setValue('qtPerson', Number(qtPerson) - 1)
+                            setValue(
+                                'qtPerson',
+                                Number(qtPerson) - 1 < 0
+                                    ? 0
+                                    : Number(qtPerson) - 1
+                            )
                         }
                         icon={<Minus color={colors.white} />}
                     />
@@ -98,6 +123,11 @@ export function MainBlock() {
                         icon={<Plus color={colors.white} />}
                     />
                 </View>
+                {errors.qtPerson?.message && (
+                    <Text style={styles.errorText}>
+                        {String(errors.qtPerson?.message)}
+                    </Text>
+                )}
             </View>
         </Block>
     );
@@ -129,5 +159,10 @@ const styles = StyleSheet.create({
         borderRightWidth: 0,
         borderColor: colors.neutral[300],
         textAlign: 'center'
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 4
     }
 });
