@@ -1,60 +1,82 @@
+import React from 'react';
 import { Block } from '@/components/ui/block';
-import Button from '@/components/ui/button';
+import ButtonUi from '@/components/ui/button';
 import { Title } from '@/components/ui/title';
 import { colors } from '@/constants/Colors';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import { Plus, Minus } from 'lucide-react-native';
+import { Plus, Minus, Trash } from 'lucide-react-native';
+import { useFormContext, Controller, useFieldArray } from 'react-hook-form';
+import { Button } from 'tamagui';
 
 export function PersonBlock() {
+    const { control } = useFormContext<any>();
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'payments'
+    });
+
     return (
         <Block>
             <View style={styles.titleTextContainer}>
                 <Title variant="h2" text="Separar por pessoa" />
-
-                <Button
+                <ButtonUi
                     buttonStyle={styles.titleAddButton}
                     icon={<Plus size={28} color={colors.white} />}
-                    onPress={() => {}}
+                    onPress={() => append({ dsPerson: '', vlPayment: 0 })}
                 />
             </View>
 
-            <View style={{ flexDirection: 'row', gap: 16 }}>
-                <View style={{ gap: 8, flex: 1 }}>
-                    <Text>Nome</Text>
+            {fields.map((field, index) => (
+                <View key={field.id} style={{ marginBottom: 16 }}>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            gap: 16,
+                            alignItems: 'center'
+                        }}
+                    >
+                        <View style={{ gap: 8, flex: 1 }}>
+                            <Text>Nome</Text>
+                            <Controller
+                                control={control}
+                                name={`payments.${index}.dsPerson`}
+                                render={({ field: { value, onChange } }) => (
+                                    <TextInput
+                                        style={styles.textInput}
+                                        value={value}
+                                        onChangeText={onChange}
+                                    />
+                                )}
+                            />
+                        </View>
+                        <View style={{ gap: 8, flex: 1 }}>
+                            <Text>Valor</Text>
+                            <Controller
+                                control={control}
+                                name={`payments.${index}.vlPayment`}
+                                render={({ field: { value, onChange } }) => (
+                                    <TextInput
+                                        keyboardType="numeric"
+                                        style={styles.textInput}
+                                        value={String(value)}
+                                        onChangeText={(text) =>
+                                            onChange(Number(text))
+                                        }
+                                    />
+                                )}
+                            />
+                        </View>
 
-                    <TextInput style={styles.textInput} value="Pessoa 1" />
+                        <Button
+                            unstyled
+                            onPress={() => remove(index)}
+                            icon={
+                                <Trash color={colors.primary[300]} size={24} />
+                            }
+                        />
+                    </View>
                 </View>
-
-                <View style={{ gap: 8, flex: 1 }}>
-                    <Text>Forma</Text>
-
-                    <TextInput style={styles.textInput} value="Dinheiro" />
-                </View>
-            </View>
-
-            <View style={{ gap: 8 }}>
-                <Text>Valor total</Text>
-
-                <View style={{ flexDirection: 'row' }}>
-                    <Button
-                        buttonStyle={styles.minusButton}
-                        onPress={() => {}}
-                        icon={<Minus color={colors.white} />}
-                    />
-
-                    <TextInput
-                        keyboardType="numeric"
-                        style={styles.spinnerInput}
-                        value="R$ 0"
-                    />
-
-                    <Button
-                        buttonStyle={styles.plusButton}
-                        onPress={() => {}}
-                        icon={<Plus color={colors.white} />}
-                    />
-                </View>
-            </View>
+            ))}
         </Block>
     );
 }

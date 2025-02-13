@@ -28,3 +28,20 @@ export type GroupedPresence = {
     dtRide: Date;
     presences: Presence[];
 };
+
+export type Bill = {
+    idBill: number;
+    dsBill: string;
+    vlBill: number;
+    qtPerson: number;
+    payments: BillPayment[];
+};
+
+export type BillPayment = {
+    idBillPayment: number;
+    idBill: number;
+    vlPayment: number;
+    fgPayed: boolean;
+    fgCustomPayment: boolean;
+    dsPerson: string;
+};

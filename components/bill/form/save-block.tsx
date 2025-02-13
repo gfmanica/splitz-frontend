@@ -3,7 +3,7 @@ import { colors } from '@/constants/Colors';
 import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
-export function SaveBlock() {
+export function SaveBlock({ onSubmit }: { onSubmit: () => void }) {
     return (
         <View style={styles.block}>
             <Button
@@ -15,7 +15,7 @@ export function SaveBlock() {
             <Button
                 buttonStyle={styles.saveButton}
                 text="Salvar"
-                onPress={() => router.push('/bill/view')}
+                onPress={onSubmit}
             />
         </View>
     );

@@ -39,9 +39,9 @@ export function DeleteButton({
             <AlertDialog.Portal>
                 <AlertDialog.Overlay />
                 <AlertDialog.Content>
-                    <AlertDialog.Title>Excluir carona</AlertDialog.Title>
+                    <AlertDialog.Title>{title}</AlertDialog.Title>
                     <AlertDialog.Description>
-                        Ao confirmar, a carona será excluída permanentemente.
+                        {description}
                     </AlertDialog.Description>
 
                     <AlertDialog.Cancel asChild>

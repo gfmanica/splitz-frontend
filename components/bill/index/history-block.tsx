@@ -70,7 +70,12 @@ export function HistoryBlock() {
 
                                 <Button
                                     unstyled
-                                    onPress={() => router.push('/bill/form')}
+                                    onPress={() =>
+                                        router.push({
+                                            pathname: '/bill/form',
+                                            params: { id: item.idBill }
+                                        })
+                                    }
                                     icon={
                                         <Pencil
                                             color={colors.neutral[600]}

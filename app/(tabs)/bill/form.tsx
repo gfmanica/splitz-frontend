@@ -2,15 +2,99 @@ import { Screen } from '@/components/ui/screen';
 import { MainBlock } from '@/components/bill/form/main-block';
 import { PersonBlock } from '@/components/bill/form/person-block';
 import { SaveBlock } from '@/components/bill/form/save-block';
+import { useLocalSearchParams } from 'expo-router';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Axios } from '@/lib/axios';
+import { Bill } from '@/types/types';
+import { Text, View } from 'tamagui';
+import { colors } from '@/constants/Colors';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Alert } from 'react-native';
+import { useEffect } from 'react';
+
+const billSchema = z.object({
+    idBill: z.number().optional(),
+    dsBill: z.string().min(1, 'Nome é obrigatório'),
+    vlBill: z.number().min(0, 'Valor deve ser no mínimo 0'),
+    qtPerson: z.number().min(0, 'Quantidade deve ser no mínimo 0'),
+    payments: z.array(
+        z.object({
+            dsPerson: z.string().min(1, 'Nome da pessoa é obrigatório'),
+            vlPayment: z.number().min(0, 'Valor deve ser no mínimo 0')
+        })
+    )
+});
+
+type BillFormValues = z.infer<typeof billSchema>;
 
 export default function BillFormScreen() {
+    const { id } = useLocalSearchParams();
+    const queryClient = useQueryClient();
+
+    const { data, isFetching } = useQuery<Bill>({
+        queryKey: ['bill', id],
+        queryFn: () => Axios.get(`/bill/${id}`).then((res) => res.data),
+        enabled: Boolean(id)
+    });
+
+    console.log(id);
+
+    const methods = useForm<BillFormValues>({
+        resolver: zodResolver(billSchema),
+        defaultValues: {
+            dsBill: '',
+            vlBill: 0,
+            qtPerson: 0,
+            payments: []
+        }
+    });
+
+    useEffect(() => methods.reset(data), [data]);
+
+    const mutation = useMutation({
+        mutationFn: (formData: BillFormValues) =>
+            data ? Axios.put('/bill', formData) : Axios.post('/bill', formData),
+        onSuccess: () => {
+            Alert.alert('Sucesso', 'Conta salva com sucesso!');
+            queryClient.invalidateQueries({
+                queryKey: ['bills']
+            });
+        },
+        onError: (error: any) =>
+            Alert.alert('Erro', error.message || 'Erro ao salvar a conta')
+    });
+
+    const onSubmit = methods.handleSubmit((formData) => {
+        mutation.mutate(formData);
+    });
+
     return (
         <Screen>
-            <MainBlock />
+            {isFetching && (
+                <View
+                    style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Text style={{ color: colors.neutral[600] }}>
+                        Carregando ...
+                    </Text>
+                </View>
+            )}
 
-            <PersonBlock />
+            {!isFetching && (
+                <FormProvider {...methods}>
+                    <MainBlock />
 
-            <SaveBlock />
+                    <PersonBlock />
+
+                    <SaveBlock onSubmit={onSubmit} />
+                </FormProvider>
+            )}
         </Screen>
     );
 }
