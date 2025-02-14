@@ -5,8 +5,12 @@ import {
     TextInputChangeEventData
 } from 'react-native';
 
-type NumberField = Omit<ComponentProps<typeof TextInput>, 'onChange'> & {
+type NumberField = Omit<
+    ComponentProps<typeof TextInput>,
+    'onChange' | 'value'
+> & {
     onChange: (value: string | number) => void;
+    value: string | number;
 };
 
 export function NumberField({ value, onChange, ...rest }: NumberField) {

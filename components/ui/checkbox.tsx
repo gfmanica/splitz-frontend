@@ -5,15 +5,17 @@ import { colors } from '@/constants/Colors';
 
 export default function Checkbox({
     value,
-    onChange
+    onChange,
+    style
 }: {
     value: boolean;
     onChange: (value: boolean) => void;
+    style?: any;
 }) {
     const [isChecked, setIsChecked] = useState(value);
 
     return (
-        <View style={styles.container}>
+        <View style={{ ...styles.container, ...style }}>
             <Pressable
                 style={[styles.checkbox, isChecked && styles.checkedCheckbox]}
                 onPress={() => {

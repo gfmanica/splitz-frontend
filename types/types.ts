@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export type Ride = {
     idRide: number;
     dsRide: string;
@@ -45,3 +47,21 @@ export type BillPayment = {
     fgCustomPayment: boolean;
     dsPerson: string;
 };
+
+export const rideSchema = z.object({
+    idRide: z.number().optional(),
+    dsRide: z.string().min(1, 'Descrição obrigatória'),
+    vlRide: z.number().min(0.01, 'Valor deve ser no mínimo 0.01'),
+    dtInit: z.date({ invalid_type_error: 'Data inicial obrigatória' }),
+    dtFinish: z.date({ invalid_type_error: 'Data final obrigatória' }),
+    qtRide: z.number().min(0.01, 'Quantidade deve ser no mínimo 0.01'),
+    fgCountWeekend: z.boolean(),
+    groupedPresences: z.any(),
+    payments: z.array(
+        z.object({
+            dsPerson: z.string().min(1, 'Nome obrigatório')
+        })
+    )
+});
+
+export type RideFormValues = z.infer<typeof rideSchema>;
