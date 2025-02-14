@@ -51,17 +51,19 @@ export type BillPayment = {
 export const rideSchema = z.object({
     idRide: z.number().optional(),
     dsRide: z.string().min(1, 'Descrição obrigatória'),
-    vlRide: z.number().min(0.01, 'Valor deve ser no mínimo 0.01'),
-    dtInit: z.date({ invalid_type_error: 'Data inicial obrigatória' }),
-    dtFinish: z.date({ invalid_type_error: 'Data final obrigatória' }),
-    qtRide: z.number().min(0.01, 'Quantidade deve ser no mínimo 0.01'),
+    vlRide: z.number().min(0.01, 'Valor deve ser no mínimo 0,01'),
+    dtInit: z.string({ invalid_type_error: 'Data inicial obrigatória' }),
+    dtFinish: z.string({ invalid_type_error: 'Data final obrigatória' }),
+    qtRide: z.number().min(0.01, 'Quantidade deve ser no mínimo 0,01'),
     fgCountWeekend: z.boolean(),
     groupedPresences: z.any(),
-    payments: z.array(
-        z.object({
-            dsPerson: z.string().min(1, 'Nome obrigatório')
-        })
-    )
+    payments: z
+        .array(
+            z.object({
+                dsPerson: z.string()
+            })
+        )
+        .min(1, 'Adicione ao menos uma pessoa')
 });
 
 export type RideFormValues = z.infer<typeof rideSchema>;

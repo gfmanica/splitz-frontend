@@ -20,7 +20,12 @@ import { RideFormValues } from '@/types/types';
 
 export function MainBlock() {
     const { id } = useLocalSearchParams();
-    const { control, setValue, watch } = useFormContext<RideFormValues>();
+    const {
+        control,
+        setValue,
+        watch,
+        formState: { errors }
+    } = useFormContext<RideFormValues>();
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'payments'
@@ -56,6 +61,12 @@ export function MainBlock() {
                         />
                     )}
                 />
+
+                {errors.dsRide?.message && (
+                    <Text style={styles.errorText}>
+                        {String(errors.dsRide?.message)}
+                    </Text>
+                )}
             </View>
 
             <View style={styles.field}>
@@ -91,6 +102,12 @@ export function MainBlock() {
                         icon={<Plus color={colors.white} />}
                     />
                 </View>
+
+                {errors.vlRide?.message && (
+                    <Text style={styles.errorText}>
+                        {String(errors.vlRide?.message)}
+                    </Text>
+                )}
             </View>
 
             <View style={styles.field}>
@@ -132,10 +149,17 @@ export function MainBlock() {
                         icon={<Plus color={colors.white} />}
                     />
                 </View>
+
+                {errors.qtRide?.message && (
+                    <Text style={styles.errorText}>
+                        {String(errors.qtRide?.message)}
+                    </Text>
+                )}
             </View>
 
             <View style={[styles.field, styles.checkboxRow]}>
                 <Text>Contar finais de semana?</Text>
+
                 <Controller
                     control={control}
                     name="fgCountWeekend"
@@ -168,6 +192,13 @@ export function MainBlock() {
                         icon={<Plus color={colors.white} />}
                     />
                 </View>
+
+                {errors.payments?.message && (
+                    <Text style={styles.errorText}>
+                        {String(errors.payments?.message)}
+                    </Text>
+                )}
+
                 <View style={styles.tagsContainer}>
                     {fields.map((field, index) => (
                         <View key={field.id} style={styles.tag}>
@@ -246,5 +277,10 @@ const styles = StyleSheet.create({
     tagText: {
         color: colors.primary[500],
         marginRight: 4
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 4
     }
 });

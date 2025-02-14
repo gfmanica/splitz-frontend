@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
 import { Check } from 'lucide-react-native';
 import { colors } from '@/constants/Colors';
@@ -13,6 +13,10 @@ export default function Checkbox({
     style?: any;
 }) {
     const [isChecked, setIsChecked] = useState(value);
+
+    useEffect(() => {
+        setIsChecked(value);
+    }, [value]);
 
     return (
         <View style={{ ...styles.container, ...style }}>

@@ -27,15 +27,9 @@ export default function RideFormScreen() {
 
     const { data, isFetching } = useQuery<RideFormValues>({
         queryKey: ['ride', id],
-        queryFn: () =>
-            Axios.get(`/bill/${id}`).then((res) => {
-                // Converter campos de data se necessário
-                const d = res.data;
-                d.dtInit = new Date(d.dtInit);
-                d.dtFinish = new Date(d.dtFinish);
-                return d;
-            }),
-        enabled: Boolean(id)
+        queryFn: () => Axios.get(`/ride/${id}`).then((res) => res.data),
+        enabled: Boolean(id),
+        gcTime: 0
     });
 
     const methods = useForm<RideFormValues>({
@@ -43,8 +37,8 @@ export default function RideFormScreen() {
         defaultValues: {
             dsRide: '',
             vlRide: 0,
-            dtInit: new Date(),
-            dtFinish: new Date(),
+            dtInit: new Date().toISOString(),
+            dtFinish: new Date().toISOString(),
             qtRide: 0,
             fgCountWeekend: false,
             groupedPresences: [],
@@ -52,17 +46,17 @@ export default function RideFormScreen() {
         }
     });
 
-    useEffect(() => {
-        if (data) {
-            methods.reset(data);
-        }
-    }, [data]);
+    useEffect(() => methods.reset(data), [data]);
 
     const mutation = useMutation({
-        mutationFn: (formData: RideFormValues) =>
-            data ? Axios.put('/bill', formData) : Axios.post('/bill', formData),
+        mutationFn: (formData: RideFormValues) => {
+            return data
+                ? Axios.put('/ride', formData)
+                : Axios.post('/ride', formData);
+        },
         onSuccess: () => {
             Alert.alert('Sucesso', 'Carona salva com sucesso!');
+
             queryClient.invalidateQueries({ queryKey: ['rides'] });
         },
         onError: (error: any) =>
