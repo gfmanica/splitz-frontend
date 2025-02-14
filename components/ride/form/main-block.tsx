@@ -110,10 +110,52 @@ export function MainBlock() {
                 )}
             </View>
 
-            <View style={styles.field}>
-                <Text>Valor da Carona (R$)</Text>
+            <View style={{ flexDirection: 'row', flex: 1, gap: 16 }}>
+                <View style={styles.field}>
+                    <Text>Data de início</Text>
 
-                <DateInput onChange={() => {}} />
+                    <Controller
+                        control={control}
+                        name="dtInit"
+                        render={({ field: { value, onChange } }) => (
+                            <DateInput
+                                value={new Date(value.replace('Z', ''))}
+                                onChange={(date) => {
+                                    onChange(date.toISOString());
+                                }}
+                            />
+                        )}
+                    />
+
+                    {errors.dtInit?.message && (
+                        <Text style={styles.errorText}>
+                            {String(errors.dtInit?.message)}
+                        </Text>
+                    )}
+                </View>
+
+                <View style={styles.field}>
+                    <Text>Data de fim</Text>
+
+                    <Controller
+                        control={control}
+                        name="dtFinish"
+                        render={({ field: { value, onChange } }) => (
+                            <DateInput
+                                value={new Date(value.replace('Z', ''))}
+                                onChange={(date) => {
+                                    onChange(date.toISOString());
+                                }}
+                            />
+                        )}
+                    />
+
+                    {errors.dtFinish?.message && (
+                        <Text style={styles.errorText}>
+                            {String(errors.dtFinish?.message)}
+                        </Text>
+                    )}
+                </View>
             </View>
 
             <View style={styles.field}>
@@ -216,7 +258,8 @@ export function MainBlock() {
 
 const styles = StyleSheet.create({
     field: {
-        gap: 8
+        gap: 8,
+        flex: 1
     },
     row: {
         flexDirection: 'row',

@@ -1,48 +1,63 @@
-import React, { useState } from 'react';
-import { View, TextInput, Pressable, Platform } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import Button from './button';
+import { formatDate, money } from '@/util/format';
+import { colors } from '@/constants/Colors';
 
-export default function DateInput({
+export default function DatePickerButton({
     value,
     onChange
 }: {
-    value?: Date | null;
+    value: Date;
     onChange: (date: Date) => void;
 }) {
-    const [showPicker, setShowPicker] = useState(false);
+    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(value);
 
-    const handleChange = (_: any, selectedDate?: Date) => {
-        setShowPicker(false);
-        if (selectedDate) {
-            onChange(selectedDate);
-        }
+    useEffect(() => setSelectedDate(value), [value]);
+
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+    };
+
+    const handleConfirm = (date: Date) => {
+        setSelectedDate(date);
+        hideDatePicker();
+        onChange(date);
     };
 
     return (
         <View>
-            <Pressable onPress={() => setShowPicker(true)}>
-                <TextInput
-                    value={value ? value.toLocaleDateString() : ''}
-                    placeholder="Selecione uma data"
-                    editable={false}
-                    style={{
-                        borderWidth: 1,
-                        borderColor: '#ccc',
-                        padding: 10,
-                        borderRadius: 8,
-                        backgroundColor: '#fff'
-                    }}
-                />
-            </Pressable>
+            <Button
+                buttonStyle={{
+                    flex: 1,
+                    height: 40,
+                    borderWidth: 1,
+                    paddingLeft: 16,
+                    borderRadius: 8,
+                    backgroundColor: colors.neutral[100],
+                    borderColor: colors.neutral[300]
+                }}
+                textStyle={{ color: 'black', fontWeight: 400 }}
+                onPress={showDatePicker}
+                text={formatDate(selectedDate.toISOString())}
+            />
 
-            {showPicker && (
-                <DateTimePicker
-                    value={value || new Date()}
-                    mode="date"
-                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                    onChange={handleChange}
-                />
-            )}
+            <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                locale="pt-BR"
+                confirmTextIOS="Confirmar"
+                cancelTextIOS="Cancelar"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+                date={selectedDate}
+            />
         </View>
     );
 }

@@ -48,22 +48,34 @@ export type BillPayment = {
     dsPerson: string;
 };
 
-export const rideSchema = z.object({
-    idRide: z.number().optional(),
-    dsRide: z.string().min(1, 'Descrição obrigatória'),
-    vlRide: z.number().min(0.01, 'Valor deve ser no mínimo 0,01'),
-    dtInit: z.string({ invalid_type_error: 'Data inicial obrigatória' }),
-    dtFinish: z.string({ invalid_type_error: 'Data final obrigatória' }),
-    qtRide: z.number().min(0.01, 'Quantidade deve ser no mínimo 0,01'),
-    fgCountWeekend: z.boolean(),
-    groupedPresences: z.any(),
-    payments: z
-        .array(
-            z.object({
-                dsPerson: z.string()
-            })
-        )
-        .min(1, 'Adicione ao menos uma pessoa')
-});
+export const rideSchema = z
+    .object({
+        idRide: z.number().optional(),
+        dsRide: z.string().min(1, 'Descrição obrigatória'),
+        vlRide: z.number().min(0.01, 'Valor deve ser no mínimo 0,01'),
+        dtInit: z.string({ invalid_type_error: 'Data inicial obrigatória' }),
+        dtFinish: z.string({ invalid_type_error: 'Data final obrigatória' }),
+        qtRide: z.number().min(0.01, 'Quantidade deve ser no mínimo 0,01'),
+        fgCountWeekend: z.boolean(),
+        groupedPresences: z.any(),
+        payments: z
+            .array(
+                z.object({
+                    dsPerson: z.string()
+                })
+            )
+            .min(1, 'Adicione ao menos uma pessoa')
+    })
+    .refine(
+        (data) => {
+            const dtInit = new Date(data.dtInit);
+            const dtFinish = new Date(data.dtFinish);
+            return dtInit < dtFinish;
+        },
+        {
+            message: 'A data de início deve ser menor que a data de fim',
+            path: ['dtInit']
+        }
+    );
 
 export type RideFormValues = z.infer<typeof rideSchema>;
