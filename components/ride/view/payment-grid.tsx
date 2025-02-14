@@ -1,9 +1,36 @@
+import React from 'react';
 import { Block } from '@/components/ui/block';
-import Checkbox from '@/components/ui/checkbox';
-import { colors } from '@/constants/Colors';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { useFormContext, Controller, useFieldArray } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { Axios } from '@/lib/axios';
+import { colors } from '@/constants/Colors';
+import Checkbox from '@/components/ui/checkbox';
+import { money } from '@/util/format';
+import { Ride } from '@/types/types';
 
 export function PaymentGrid() {
+    const { control, getValues, setValue } = useFormContext<Ride>();
+    const { fields } = useFieldArray({ control, name: 'payments' });
+    const mutation = useMutation({
+        mutationFn: () => Axios.put('/ride', getValues()),
+        onError: () => {
+            console.warn('Erro ao atualizar pagamento.');
+        },
+        onSuccess: () => {
+            console.log('Pagamento atualizado com sucesso.');
+        }
+    });
+
+    function savePayment(
+        index: number,
+        field: keyof Ride['payments'][number],
+        newValue: any
+    ) {
+        setValue(`payments.${index}.${field}`, newValue);
+        mutation.mutate();
+    }
+
     return (
         <Block>
             <View>
@@ -11,7 +38,6 @@ export function PaymentGrid() {
                     <View style={[styles.column, styles.firstColumn]}>
                         <Text style={styles.textHeader}>Pago</Text>
                     </View>
-
                     <View style={styles.column}>
                         <Text
                             style={[{ textAlign: 'right' }, styles.textHeader]}
@@ -19,83 +45,82 @@ export function PaymentGrid() {
                             Valor
                         </Text>
                     </View>
-
                     <View style={styles.column}>
                         <Text style={styles.textHeader}>Nome</Text>
                     </View>
                 </View>
 
-                <View style={styles.headerRow}>
-                    <View style={[styles.column, styles.firstColumn]}>
-                        <Checkbox />
-                    </View>
+                {fields.map((field, index) => {
+                    const isLast = index === fields.length - 1;
 
-                    <View style={styles.column}>
-                        <Text style={styles.valueColumnText}>R$ 32,00</Text>
-                    </View>
+                    return (
+                        <View
+                            key={field.id}
+                            style={{
+                                ...styles.headerRow,
+                                ...(isLast && styles.lastRow)
+                            }}
+                        >
+                            <View style={[styles.column, styles.firstColumn]}>
+                                <Controller
+                                    control={control}
+                                    name={`payments.${index}.fgPayed`}
+                                    render={({
+                                        field: { value, onChange }
+                                    }) => (
+                                        <Checkbox
+                                            value={value}
+                                            onChange={(newVal: boolean) => {
+                                                onChange(newVal);
+                                                savePayment(
+                                                    index,
+                                                    'fgPayed',
+                                                    newVal
+                                                );
+                                            }}
+                                        />
+                                    )}
+                                />
+                            </View>
 
-                    <View style={[styles.column]}>
-                        <TextInput style={styles.textInput} value="Ana" />
-                    </View>
-                </View>
+                            <View style={styles.column}>
+                                <Text style={styles.valueColumnText}>
+                                    {money(Number(field.vlPayment.toFixed(2)))}
+                                </Text>
+                            </View>
 
-                <View style={styles.headerRow}>
-                    <View style={[styles.column, styles.firstColumn]}>
-                        <Checkbox />
-                    </View>
-
-                    <View style={styles.column}>
-                        <Text style={styles.valueColumnText}>R$ 32,00</Text>
-                    </View>
-
-                    <View style={[styles.column]}>
-                        <TextInput style={styles.textInput} value="Steven" />
-                    </View>
-                </View>
-
-                <View style={styles.headerRow}>
-                    <View style={[styles.column, styles.firstColumn]}>
-                        <Checkbox />
-                    </View>
-
-                    <View style={styles.column}>
-                        <Text style={styles.valueColumnText}>R$ 32,00</Text>
-                    </View>
-
-                    <View style={[styles.column]}>
-                        <TextInput style={styles.textInput} value="Ricardo" />
-                    </View>
-                </View>
-
-                <View style={[styles.headerRow, styles.lastRow]}>
-                    <View style={[styles.column, styles.firstColumn]}>
-                        <Checkbox />
-                    </View>
-
-                    <View style={styles.column}>
-                        <Text style={styles.valueColumnText}>R$ 32,00</Text>
-                    </View>
-
-                    <View style={[styles.column]}>
-                        <TextInput style={styles.textInput} value="Boaretto" />
-                    </View>
-                </View>
+                            <View style={[styles.column]}>
+                                <Controller
+                                    control={control}
+                                    name={`payments.${index}.dsPerson`}
+                                    render={({
+                                        field: { value, onChange }
+                                    }) => (
+                                        <TextInput
+                                            style={styles.textInput}
+                                            value={value}
+                                            onChangeText={onChange}
+                                            onBlur={() =>
+                                                savePayment(
+                                                    index,
+                                                    'dsPerson',
+                                                    value
+                                                )
+                                            }
+                                            placeholder="Digite o nome"
+                                        />
+                                    )}
+                                />
+                            </View>
+                        </View>
+                    );
+                })}
             </View>
         </Block>
     );
 }
 
 const styles = StyleSheet.create({
-    textHeader: {
-        fontWeight: 700
-    },
-    textInput: {
-        height: '100%',
-        borderWidth: 1,
-        paddingLeft: 16,
-        borderRadius: 8,
-        borderColor: colors.neutral[300]
-    },
     headerRow: {
         height: 48,
         alignItems: 'center',
@@ -107,12 +132,6 @@ const styles = StyleSheet.create({
         flex: 0.5,
         borderLeftWidth: 0
     },
-    valueColumnText: {
-        textAlign: 'right',
-        color: colors.primary[400],
-        fontWeight: 600,
-        fontSize: 16
-    },
     column: {
         flex: 1,
         padding: 8,
@@ -120,6 +139,22 @@ const styles = StyleSheet.create({
         height: 48,
         justifyContent: 'center',
         borderLeftColor: colors.neutral[300]
+    },
+    textHeader: {
+        fontWeight: '700'
+    },
+    textInput: {
+        height: '100%',
+        borderWidth: 1,
+        paddingLeft: 16,
+        borderRadius: 8,
+        borderColor: colors.neutral[300]
+    },
+    valueColumnText: {
+        textAlign: 'right',
+        color: colors.primary[400],
+        fontWeight: '600',
+        fontSize: 16
     },
     lastRow: {
         borderBottomWidth: 0

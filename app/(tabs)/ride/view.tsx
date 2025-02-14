@@ -7,17 +7,48 @@ import { Title } from '@/components/ui/title';
 import { colors } from '@/constants/Colors';
 import { Axios } from '@/lib/axios';
 import { Ride } from '@/types/types';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocalSearchParams } from 'expo-router';
-import { ScrollView, View, Text } from 'react-native';
+import { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { ScrollView, View, Text, Alert } from 'react-native';
 
 export default function RideViewScreen() {
     const { id } = useLocalSearchParams();
+    const queryClient = useQueryClient();
+    const [ride, setRide] = useState<Ride | null>(null);
+
+    const methods = useForm<Ride>();
+
+    const { control, setValue, getValues, reset } = methods;
 
     const { data, isFetching } = useQuery<Ride>({
         queryKey: ['ride', id],
         queryFn: () => Axios.get(`/ride/${id}`).then((res) => res.data)
     });
+
+    const { mutate } = useMutation({
+        mutationFn: () => Axios.put(`/bill`, getValues()),
+        onError: () => {
+            Alert.alert('Falha', 'Falha ao salvar. Revertendo alteração.');
+        },
+        onSuccess: () => {
+            Alert.alert('Sucesso', 'Conta salva com sucesso.');
+
+            setRide(getValues());
+
+            queryClient.invalidateQueries({
+                queryKey: ['ride', id]
+            });
+        }
+    });
+
+    useEffect(() => {
+        if (data) {
+            setRide(data);
+            reset(data);
+        }
+    }, [data]);
 
     return (
         <Screen>
@@ -35,12 +66,12 @@ export default function RideViewScreen() {
                 </View>
             )}
 
-            {!isFetching && data && (
-                <>
+            {!isFetching && ride && (
+                <FormProvider {...methods}>
                     <ScrollView>
                         <View style={{ gap: 16, marginBottom: 76 }}>
                             <Block>
-                                <Title variant="h1" text={data.dsRide} />
+                                <Title variant="h1" text={ride.dsRide} />
                             </Block>
 
                             <RideGrid />
@@ -49,8 +80,8 @@ export default function RideViewScreen() {
                         </View>
                     </ScrollView>
 
-                    <SummaryBlock data={data} />
-                </>
+                    <SummaryBlock data={ride} />
+                </FormProvider>
             )}
         </Screen>
     );
