@@ -14,28 +14,15 @@ import { Ride } from '@/types/types';
 import { Minus, Plus } from 'lucide-react-native';
 
 export function RideGrid({ save }: { save: () => void }) {
-    const { control, getValues, setValue } = useFormContext<Ride>();
+    const { control, getValues } = useFormContext<Ride>();
     const rideData = getValues();
     const groupedPresences = rideData.groupedPresences || [];
     const payments = rideData.payments || [];
 
-    function savePresence(
-        rowIndex: number,
-        colIndex: number,
-        newValue: number
-    ) {
-        setValue(
-            `groupedPresences.${rowIndex}.presences.${colIndex}.qtPresence`,
-            newValue
-        );
-        save();
-    }
-
     return (
-        <Block>
+        <Block style={styles.limitedHeightBlock}>
             <ScrollView horizontal>
-                <View>
-                    {/* Header */}
+                <View style={{ flex: 1 }}>
                     <View style={styles.headerRow}>
                         <View style={[styles.column, styles.firstColumn]}>
                             <Text style={styles.textHeader}>Data</Text>
@@ -49,113 +36,139 @@ export function RideGrid({ save }: { save: () => void }) {
                             </View>
                         ))}
                     </View>
+                    <ScrollView>
+                        {groupedPresences.map(
+                            (group: any, rowIndex: number) => {
+                                const isLast =
+                                    rowIndex === groupedPresences.length - 1;
 
-                    {/* Linhas de dados */}
-                    {groupedPresences.map((group: any, rowIndex: number) => {
-                        const isLast = rowIndex === groupedPresences.length - 1;
+                                return (
+                                    <View
+                                        key={rowIndex}
+                                        style={{
+                                            ...styles.headerRow,
+                                            ...(isLast && styles.lastRow)
+                                        }}
+                                    >
+                                        <View
+                                            style={[
+                                                styles.column,
+                                                styles.firstColumn
+                                            ]}
+                                        >
+                                            <Text>
+                                                {new Date(
+                                                    group.dtRide
+                                                ).toLocaleDateString()}
+                                            </Text>
+                                        </View>
 
-                        return (
-                            <View
-                                key={rowIndex}
-                                style={{
-                                    ...styles.headerRow,
-                                    ...(isLast && styles.lastRow)
-                                }}
-                            >
-                                <View
-                                    style={[styles.column, styles.firstColumn]}
-                                >
-                                    <Text>
-                                        {new Date(
-                                            group.dtRide
-                                        ).toLocaleDateString()}
-                                    </Text>
-                                </View>
-
-                                {payments.map((_: any, colIndex: number) => (
-                                    <View key={colIndex} style={styles.column}>
-                                        <Controller
-                                            control={control}
-                                            name={`groupedPresences.${rowIndex}.presences.${colIndex}.qtPresence`}
-                                            render={({
-                                                field: { value, onChange }
-                                            }) => (
+                                        {payments.map(
+                                            (_: any, colIndex: number) => (
                                                 <View
-                                                    style={
-                                                        styles.spinnerContainer
-                                                    }
+                                                    key={colIndex}
+                                                    style={styles.column}
                                                 >
-                                                    <TouchableOpacity
-                                                        style={{
-                                                            ...styles.smallButton,
-                                                            borderBottomRightRadius: 0,
-                                                            borderTopRightRadius: 0
-                                                        }}
-                                                        onPress={() => {
-                                                            const newVal =
-                                                                Number(value) -
-                                                                    1 <
-                                                                0
-                                                                    ? 0
-                                                                    : Number(
-                                                                          value
-                                                                      ) - 1;
-                                                            onChange(newVal);
-                                                            savePresence(
-                                                                rowIndex,
-                                                                colIndex,
-                                                                newVal
-                                                            );
-                                                        }}
-                                                    >
-                                                        <Minus
-                                                            size={16}
-                                                            color={colors.white}
-                                                        />
-                                                    </TouchableOpacity>
-                                                    <TextInput
-                                                        readOnly
-                                                        style={
-                                                            styles.spinnerInput
-                                                        }
-                                                        value={value?.toString()}
+                                                    <Controller
+                                                        control={control}
+                                                        name={`groupedPresences.${rowIndex}.presences.${colIndex}.qtPresence`}
+                                                        render={({
+                                                            field: {
+                                                                value,
+                                                                onChange
+                                                            }
+                                                        }) => (
+                                                            <View
+                                                                style={
+                                                                    styles.spinnerContainer
+                                                                }
+                                                            >
+                                                                <TouchableOpacity
+                                                                    style={{
+                                                                        ...styles.smallButton,
+                                                                        borderBottomRightRadius: 0,
+                                                                        borderTopRightRadius: 0
+                                                                    }}
+                                                                    onPress={() => {
+                                                                        const newVal =
+                                                                            Number(
+                                                                                value
+                                                                            ) -
+                                                                                1 <
+                                                                            0
+                                                                                ? 0
+                                                                                : Number(
+                                                                                      value
+                                                                                  ) -
+                                                                                  1;
+                                                                        onChange(
+                                                                            newVal
+                                                                        );
+
+                                                                        save();
+                                                                    }}
+                                                                >
+                                                                    <Minus
+                                                                        size={
+                                                                            16
+                                                                        }
+                                                                        color={
+                                                                            colors.white
+                                                                        }
+                                                                    />
+                                                                </TouchableOpacity>
+                                                                <TextInput
+                                                                    readOnly
+                                                                    style={
+                                                                        styles.spinnerInput
+                                                                    }
+                                                                    value={value?.toString()}
+                                                                />
+                                                                <TouchableOpacity
+                                                                    style={{
+                                                                        ...styles.smallButton,
+                                                                        borderBottomLeftRadius: 0,
+                                                                        borderTopLeftRadius: 0
+                                                                    }}
+                                                                    onPress={() => {
+                                                                        const newVal =
+                                                                            Number(
+                                                                                value
+                                                                            ) +
+                                                                                1 >
+                                                                            rideData.qtRide
+                                                                                ? rideData.qtRide
+                                                                                : Number(
+                                                                                      value
+                                                                                  ) +
+                                                                                  1;
+                                                                        onChange(
+                                                                            newVal
+                                                                        );
+
+                                                                        save();
+                                                                    }}
+                                                                >
+                                                                    <Plus
+                                                                        size={
+                                                                            16
+                                                                        }
+                                                                        color={
+                                                                            colors.white
+                                                                        }
+                                                                    />
+                                                                </TouchableOpacity>
+                                                            </View>
+                                                        )}
                                                     />
-                                                    <TouchableOpacity
-                                                        style={{
-                                                            ...styles.smallButton,
-                                                            borderBottomLeftRadius: 0,
-                                                            borderTopLeftRadius: 0
-                                                        }}
-                                                        onPress={() => {
-                                                            const newVal =
-                                                                Number(value) +
-                                                                    1 >
-                                                                rideData.qtRide
-                                                                    ? rideData.qtRide
-                                                                    : Number(
-                                                                          value
-                                                                      ) + 1;
-                                                            onChange(newVal);
-                                                            savePresence(
-                                                                rowIndex,
-                                                                colIndex,
-                                                                newVal
-                                                            );
-                                                        }}
-                                                    >
-                                                        <Plus
-                                                            size={16}
-                                                            color={colors.white}
-                                                        />
-                                                    </TouchableOpacity>
                                                 </View>
-                                            )}
-                                        />
+                                            )
+                                        )}
                                     </View>
-                                ))}
-                            </View>
-                        );
-                    })}
+                                );
+                            }
+                        )}
+                    </ScrollView>
                 </View>
             </ScrollView>
         </Block>
@@ -164,7 +177,7 @@ export function RideGrid({ save }: { save: () => void }) {
 
 const styles = StyleSheet.create({
     headerRow: {
-        height: 48,
+        minHeight: 48,
         flex: 1,
         alignItems: 'center',
         flexDirection: 'row',
@@ -222,5 +235,9 @@ const styles = StyleSheet.create({
     },
     lastRow: {
         borderBottomWidth: 0
+    },
+    limitedHeightBlock: {
+        maxHeight: 400,
+        overflow: 'hidden'
     }
 });

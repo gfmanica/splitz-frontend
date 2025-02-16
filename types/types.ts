@@ -61,7 +61,10 @@ export const rideSchema = z
         payments: z
             .array(
                 z.object({
-                    dsPerson: z.string()
+                    dsPerson: z.string(),
+                    fgPayed: z.boolean().optional(),
+                    idRidePayment: z.number().optional(),
+                    vlPayment: z.number().optional()
                 })
             )
             .min(1, 'Adicione ao menos uma pessoa')

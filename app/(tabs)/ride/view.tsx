@@ -24,7 +24,8 @@ export default function RideViewScreen() {
 
     const { data, isFetching } = useQuery<Ride>({
         queryKey: ['ride', id],
-        queryFn: () => Axios.get(`/ride/${id}`).then((res) => res.data)
+        queryFn: () => Axios.get(`/ride/${id}`).then((res) => res.data),
+        gcTime: 0
     });
 
     const { mutate } = useMutation({
@@ -52,7 +53,7 @@ export default function RideViewScreen() {
 
     return (
         <Screen>
-            {isFetching && (
+            {isFetching && !ride && (
                 <View
                     style={{
                         flex: 1,
@@ -66,7 +67,7 @@ export default function RideViewScreen() {
                 </View>
             )}
 
-            {!isFetching && ride && (
+            {((isFetching && ride) || ride) && (
                 <FormProvider {...methods}>
                     <ScrollView>
                         <View style={{ gap: 16, marginBottom: 76 }}>

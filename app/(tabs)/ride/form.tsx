@@ -1,25 +1,14 @@
 import React, { useEffect } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
-import { Screen } from '@/components/ui/screen';
 import { MainBlock } from '@/components/ride/form/main-block';
 import { SaveBlock } from '@/components/ride/form/save-block';
 import { useLocalSearchParams } from 'expo-router';
-import {
-    useForm,
-    FormProvider,
-    Controller,
-    useFieldArray
-} from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Axios } from '@/lib/axios';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { NumberField } from '@/components/ui/number-field';
-import { Checkbox } from 'tamagui';
-import { Text, TextInput, Button } from 'react-native';
+import { Text } from 'react-native';
 import { RideFormValues, rideSchema } from '@/types/types';
-
-// Definição do schema (groupedPresences é repassado sem validação)
 
 export default function RideFormScreen() {
     const { id } = useLocalSearchParams();
@@ -64,6 +53,7 @@ export default function RideFormScreen() {
     });
 
     const onSubmit = methods.handleSubmit((formData) => {
+        console.log(formData);
         mutation.mutate(formData);
     });
 
