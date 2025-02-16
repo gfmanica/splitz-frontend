@@ -28,7 +28,7 @@ export default function RideViewScreen() {
     });
 
     const { mutate } = useMutation({
-        mutationFn: () => Axios.put(`/bill`, getValues()),
+        mutationFn: () => Axios.put(`/ride`, getValues()),
         onError: () => {
             Alert.alert('Falha', 'Falha ao salvar. Revertendo alteração.');
         },
@@ -74,9 +74,9 @@ export default function RideViewScreen() {
                                 <Title variant="h1" text={ride.dsRide} />
                             </Block>
 
-                            <RideGrid />
+                            <RideGrid save={mutate} />
 
-                            <PaymentGrid />
+                            <PaymentGrid save={mutate} />
                         </View>
                     </ScrollView>
 

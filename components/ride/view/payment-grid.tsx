@@ -2,25 +2,14 @@ import React from 'react';
 import { Block } from '@/components/ui/block';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useFormContext, Controller, useFieldArray } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import { Axios } from '@/lib/axios';
 import { colors } from '@/constants/Colors';
 import Checkbox from '@/components/ui/checkbox';
 import { money } from '@/util/format';
 import { Ride } from '@/types/types';
 
-export function PaymentGrid() {
-    const { control, getValues, setValue } = useFormContext<Ride>();
+export function PaymentGrid({ save }: { save: () => void }) {
+    const { control,setValue } = useFormContext<Ride>();
     const { fields } = useFieldArray({ control, name: 'payments' });
-    const mutation = useMutation({
-        mutationFn: () => Axios.put('/ride', getValues()),
-        onError: () => {
-            console.warn('Erro ao atualizar pagamento.');
-        },
-        onSuccess: () => {
-            console.log('Pagamento atualizado com sucesso.');
-        }
-    });
 
     function savePayment(
         index: number,
@@ -28,7 +17,7 @@ export function PaymentGrid() {
         newValue: any
     ) {
         setValue(`payments.${index}.${field}`, newValue);
-        mutation.mutate();
+        save();
     }
 
     return (

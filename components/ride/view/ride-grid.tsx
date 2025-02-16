@@ -9,23 +9,15 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { useFormContext, Controller } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import { Axios } from '@/lib/axios';
 import { colors } from '@/constants/Colors';
 import { Ride } from '@/types/types';
 import { Minus, Plus } from 'lucide-react-native';
 
-export function RideGrid() {
+export function RideGrid({ save }: { save: () => void }) {
     const { control, getValues, setValue } = useFormContext<Ride>();
     const rideData = getValues();
     const groupedPresences = rideData.groupedPresences || [];
     const payments = rideData.payments || [];
-
-    const mutation = useMutation({
-        mutationFn: () => Axios.put('/ride', getValues()),
-        onError: () => console.warn('Erro ao atualizar presença.'),
-        onSuccess: () => console.log('Presença atualizada com sucesso.')
-    });
 
     function savePresence(
         rowIndex: number,
@@ -36,7 +28,7 @@ export function RideGrid() {
             `groupedPresences.${rowIndex}.presences.${colIndex}.qtPresence`,
             newValue
         );
-        mutation.mutate();
+        save();
     }
 
     return (
@@ -48,6 +40,7 @@ export function RideGrid() {
                         <View style={[styles.column, styles.firstColumn]}>
                             <Text style={styles.textHeader}>Data</Text>
                         </View>
+
                         {payments.map((payment: any, colIndex: number) => (
                             <View key={colIndex} style={styles.column}>
                                 <Text style={styles.textHeader}>
@@ -69,8 +62,6 @@ export function RideGrid() {
                                     ...(isLast && styles.lastRow)
                                 }}
                             >
-                                {' '}
-                                // nova propriedade para última linha
                                 <View
                                     style={[styles.column, styles.firstColumn]}
                                 >
@@ -80,6 +71,7 @@ export function RideGrid() {
                                         ).toLocaleDateString()}
                                     </Text>
                                 </View>
+
                                 {payments.map((_: any, colIndex: number) => (
                                     <View key={colIndex} style={styles.column}>
                                         <Controller
@@ -122,23 +114,11 @@ export function RideGrid() {
                                                         />
                                                     </TouchableOpacity>
                                                     <TextInput
+                                                        readOnly
                                                         style={
                                                             styles.spinnerInput
                                                         }
                                                         value={value?.toString()}
-                                                        onChangeText={(text) =>
-                                                            onChange(
-                                                                Number(text)
-                                                            )
-                                                        }
-                                                        onBlur={() =>
-                                                            savePresence(
-                                                                rowIndex,
-                                                                colIndex,
-                                                                Number(value)
-                                                            )
-                                                        }
-                                                        keyboardType="numeric"
                                                     />
                                                     <TouchableOpacity
                                                         style={{
@@ -149,7 +129,12 @@ export function RideGrid() {
                                                         onPress={() => {
                                                             const newVal =
                                                                 Number(value) +
-                                                                1;
+                                                                    1 >
+                                                                rideData.qtRide
+                                                                    ? rideData.qtRide
+                                                                    : Number(
+                                                                          value
+                                                                      ) + 1;
                                                             onChange(newVal);
                                                             savePresence(
                                                                 rowIndex,
@@ -180,6 +165,7 @@ export function RideGrid() {
 const styles = StyleSheet.create({
     headerRow: {
         height: 48,
+        flex: 1,
         alignItems: 'center',
         flexDirection: 'row',
         borderBottomWidth: 1,
@@ -187,11 +173,13 @@ const styles = StyleSheet.create({
     },
     firstColumn: {
         width: 110, // trocado de minWidth para width
+        flex: 0,
         borderLeftWidth: 0,
         paddingHorizontal: 8
     },
     column: {
-        width: 110, // trocado de minWidth para width
+        minWidth: 110, // trocado de minWidth para width
+        flex: 1,
         padding: 8,
         borderLeftWidth: 1,
         height: 48,
