@@ -16,13 +16,14 @@ export default function BillViewScreen() {
     const [bill, setBill] = useState<Bill | null>(null);
 
     const { data, isFetching } = useQuery<Bill>({
-        queryKey: ['bill', id],
+        queryKey: ['bill'],
         queryFn: () => Axios.get(`/bill/${id}`).then((res) => res.data),
         enabled: Boolean(id),
         gcTime: 0
     });
 
     useEffect(() => {
+        console.log(data);
         if (data) setBill(data);
     }, [data]);
 

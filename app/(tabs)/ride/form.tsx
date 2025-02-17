@@ -43,10 +43,12 @@ export default function RideFormScreen() {
                 ? Axios.put('/ride', formData)
                 : Axios.post('/ride', formData);
         },
-        onSuccess: () => {
+        onSuccess: (ride: any) => {
             Alert.alert('Sucesso', 'Carona salva com sucesso!');
 
             queryClient.invalidateQueries({ queryKey: ['rides'] });
+
+            methods.reset(ride.data);
         },
         onError: (error: any) =>
             Alert.alert('Erro', error.message || 'Erro ao salvar a carona')

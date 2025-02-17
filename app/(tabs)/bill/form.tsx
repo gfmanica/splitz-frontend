@@ -40,12 +40,14 @@ export default function BillFormScreen() {
     const mutation = useMutation({
         mutationFn: (formData: BillFormValues) =>
             data ? Axios.put('/bill', formData) : Axios.post('/bill', formData),
-        onSuccess: () => {
+        onSuccess: (bill: any) => {
             Alert.alert('Sucesso', 'Conta salva com sucesso!');
 
             queryClient.invalidateQueries({
                 queryKey: ['bills']
             });
+
+            methods.reset(bill.data);
         },
         onError: (error: any) =>
             Alert.alert('Erro', error.message || 'Erro ao salvar a conta')

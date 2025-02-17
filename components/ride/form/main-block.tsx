@@ -19,7 +19,6 @@ import DateInput from '@/components/ui/date-field';
 import { RideFormValues } from '@/types/types';
 
 export function MainBlock() {
-    const { id } = useLocalSearchParams();
     const {
         control,
         setValue,
@@ -34,6 +33,7 @@ export function MainBlock() {
     const dsRide = watch('dsRide');
     const vlRide = watch('vlRide');
     const qtRide = watch('qtRide');
+    const idRide = watch('idRide');
 
     const handleAddPerson = () => {
         if (newPerson.trim() !== '') {
@@ -44,7 +44,7 @@ export function MainBlock() {
 
     return (
         <Block>
-            <Title variant="h1" text={id ? 'Editar carona' : 'Nova carona'} />
+            <Title variant="h1" text={idRide ? 'Editar carona' : 'Nova carona'} />
 
             <View style={styles.field}>
                 <Text>Descrição</Text>

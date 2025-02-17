@@ -10,7 +10,6 @@ import { useLocalSearchParams } from 'expo-router';
 import { NumberField } from '@/components/ui/number-field';
 
 export function MainBlock() {
-    const { id } = useLocalSearchParams();
     const {
         control,
         setValue,
@@ -19,10 +18,11 @@ export function MainBlock() {
     } = useFormContext<any>();
     const vlBill = watch('vlBill');
     const qtPerson = watch('qtPerson');
+    const idBill = watch('idBill');
 
     return (
         <Block>
-            <Title variant="h1" text={id ? 'Editar conta' : 'Nova conta'} />
+            <Title variant="h1" text={idBill ? 'Editar conta' : 'Nova conta'} />
 
             <View style={{ gap: 8 }}>
                 <Text>Nome</Text>
