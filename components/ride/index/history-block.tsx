@@ -9,6 +9,7 @@ import { Axios } from '@/lib/axios';
 import { formatDate, money } from '@/util/format';
 import { DeleteButton } from '../../ui/delete-button';
 import { Button } from 'tamagui';
+import Loading from '@/components/ui/loading';
 
 export function HistoryBlock() {
     const { data, isFetching } = useQuery({
@@ -22,9 +23,7 @@ export function HistoryBlock() {
 
             {isFetching && (
                 <View style={{ alignItems: 'center' }}>
-                    <Text style={{ color: colors.neutral[600] }}>
-                        Carregando ...
-                    </Text>
+                    <Loading />
                 </View>
             )}
 

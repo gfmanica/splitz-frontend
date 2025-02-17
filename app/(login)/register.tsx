@@ -41,7 +41,7 @@ export default function RegisterScreen() {
         resolver: zodResolver(registerSchema)
     });
 
-    const { mutate, error } = useMutation({
+    const { mutate, error, isPending } = useMutation({
         mutationFn: (data: RegisterFormInputs) => Axios.post('/register', data),
         onSuccess: () => router.back()
     });
@@ -155,6 +155,7 @@ export default function RegisterScreen() {
                 buttonStyle={styles.buttonRegister}
                 text="Cadastrar-se"
                 onPress={handleSubmit(onSubmit)}
+                isLoading={isPending}
             />
 
             <LoginDivider />

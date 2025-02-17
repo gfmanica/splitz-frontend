@@ -37,7 +37,7 @@ export default function RideFormScreen() {
 
     useEffect(() => methods.reset(data), [data]);
 
-    const mutation = useMutation({
+    const { isPending, mutate } = useMutation({
         mutationFn: (formData: RideFormValues) => {
             return data
                 ? Axios.put('/ride', formData)
@@ -54,10 +54,7 @@ export default function RideFormScreen() {
             Alert.alert('Erro', error.message || 'Erro ao salvar a carona')
     });
 
-    const onSubmit = methods.handleSubmit((formData) => {
-        console.log(formData);
-        mutation.mutate(formData);
-    });
+    const onSubmit = methods.handleSubmit((formData) => mutate(formData));
 
     return (
         <View style={{ flex: 1 }}>
@@ -88,7 +85,7 @@ export default function RideFormScreen() {
                         </View>
                     </ScrollView>
 
-                    <SaveBlock onSubmit={onSubmit} />
+                    <SaveBlock onSubmit={onSubmit} isLoading={isPending} />
                 </FormProvider>
             )}
         </View>

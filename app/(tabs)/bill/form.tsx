@@ -12,6 +12,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, ScrollView } from 'react-native';
 import { useEffect } from 'react';
+import Loading from '@/components/ui/loading';
 
 export default function BillFormScreen() {
     const { id } = useLocalSearchParams();
@@ -37,7 +38,7 @@ export default function BillFormScreen() {
 
     console.log(methods.formState.errors);
 
-    const mutation = useMutation({
+    const { isPending, mutate } = useMutation({
         mutationFn: (formData: BillFormValues) =>
             data ? Axios.put('/bill', formData) : Axios.post('/bill', formData),
         onSuccess: (bill: any) => {
@@ -53,9 +54,7 @@ export default function BillFormScreen() {
             Alert.alert('Erro', error.message || 'Erro ao salvar a conta')
     });
 
-    const onSubmit = methods.handleSubmit((formData) =>
-        mutation.mutate(formData)
-    );
+    const onSubmit = methods.handleSubmit((formData) => mutate(formData));
 
     return (
         <View style={{ flex: 1 }}>
@@ -67,9 +66,7 @@ export default function BillFormScreen() {
                         justifyContent: 'center'
                     }}
                 >
-                    <Text style={{ color: colors.neutral[600] }}>
-                        Carregando ...
-                    </Text>
+                    <Loading />
                 </View>
             )}
 
@@ -90,7 +87,7 @@ export default function BillFormScreen() {
                         </View>
                     </ScrollView>
 
-                    <SaveBlock onSubmit={onSubmit} />
+                    <SaveBlock onSubmit={onSubmit} isLoading={isPending} />
                 </FormProvider>
             )}
         </View>

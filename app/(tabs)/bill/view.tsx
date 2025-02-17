@@ -1,6 +1,7 @@
 import { GridView } from '@/components/bill/view/grid-view';
 import { SummaryBlock } from '@/components/bill/view/summary-block';
 import { Block } from '@/components/ui/block';
+import Loading from '@/components/ui/loading';
 import { Screen } from '@/components/ui/screen';
 import { Title } from '@/components/ui/title';
 import { colors } from '@/constants/Colors';
@@ -37,9 +38,7 @@ export default function BillViewScreen() {
                         justifyContent: 'center'
                     }}
                 >
-                    <Text style={{ color: colors.neutral[600] }}>
-                        Carregando ...
-                    </Text>
+                    <Loading />
                 </View>
             )}
 

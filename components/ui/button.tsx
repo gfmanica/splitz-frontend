@@ -1,12 +1,15 @@
 import { colors } from '@/constants/Colors';
+import { Loader, Loader2 } from 'lucide-react-native';
 import { ReactNode } from 'react';
 import {
+    Animated,
     Pressable,
     PressableProps,
     StyleSheet,
     Text,
     TextProps
 } from 'react-native';
+import Loading from './loading';
 
 type TButton = {
     text?: string;
@@ -14,6 +17,7 @@ type TButton = {
     onPress?: PressableProps['onPress'];
     textStyle?: TextProps['style'];
     buttonStyle?: PressableProps['style'];
+    isLoading?: boolean;
 };
 
 export default function Button({
@@ -21,14 +25,18 @@ export default function Button({
     icon,
     onPress,
     textStyle,
-    buttonStyle
+    buttonStyle,
+    isLoading
 }: TButton) {
     return (
         <Pressable
+            disabled={isLoading}
             onPress={onPress ? onPress : () => {}}
             style={StyleSheet.flatten([styles.button, buttonStyle])}
         >
-            {text && (
+            {isLoading && <Loading />}
+
+            {!isLoading && text && (
                 <Text style={StyleSheet.flatten([styles.text, textStyle])}>
                     {text}
                 </Text>

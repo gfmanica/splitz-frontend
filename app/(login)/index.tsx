@@ -32,7 +32,7 @@ export default function LoginScreen() {
         resolver: zodResolver(loginSchema)
     });
 
-    const { mutate, error } = useMutation({
+    const { mutate, error, isPending } = useMutation({
         mutationFn: (data: LoginFormInputs) => Axios.post('/login', data),
         onSuccess: (response) => {
             const token = response.data.token;
@@ -104,8 +104,11 @@ export default function LoginScreen() {
                     </Text>
                 )}
 
-                <Button text="Entrar" onPress={handleSubmit(onSubmit)} />
-                <Button text="Entrar" onPress={() => router.push('/bill')} />
+                <Button
+                    text="Entrar"
+                    onPress={handleSubmit(onSubmit)}
+                    isLoading={isPending}
+                />
 
                 <LoginDivider />
 

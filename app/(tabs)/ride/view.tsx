@@ -2,6 +2,7 @@ import { PaymentGrid } from '@/components/ride/view/payment-grid';
 import { RideGrid } from '@/components/ride/view/ride-grid';
 import { SummaryBlock } from '@/components/ride/view/summary-block';
 import { Block } from '@/components/ui/block';
+import Loading from '@/components/ui/loading';
 import { Screen } from '@/components/ui/screen';
 import { Title } from '@/components/ui/title';
 import { colors } from '@/constants/Colors';
@@ -62,9 +63,7 @@ export default function RideViewScreen() {
                         justifyContent: 'center'
                     }}
                 >
-                    <Text style={{ color: colors.neutral[600] }}>
-                        Carregando ...
-                    </Text>
+                    <Loading />
                 </View>
             )}
 
