@@ -5,10 +5,14 @@ import Button from '@/components/ui/button';
 import { router } from 'expo-router';
 import { Block } from '@/components/ui/block';
 import { Screen } from '@/components/ui/screen';
-
+import { jwtDecode } from 'jwt-decode';
+import { Axios } from '@/lib/axios';
 
 export default function SettingsScreen() {
-    
+    const user: any = jwtDecode(
+        String(Axios.defaults.headers.common['Authorization'])
+    );
+
     return (
         <Screen>
             <Block>
@@ -18,11 +22,9 @@ export default function SettingsScreen() {
                     </View>
 
                     <View>
-                        <Text>Gabriel Felipe Manica</Text>
+                        <Text>{user.name}</Text>
 
-                        <Text style={styles.emailText}>
-                            gabrielfelipemanica@gmail.com
-                        </Text>
+                        <Text style={styles.emailText}>{user.email}</Text>
                     </View>
                 </View>
 

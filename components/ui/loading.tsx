@@ -2,7 +2,7 @@ import { colors } from '@/constants/Colors';
 import { Loader } from 'lucide-react-native';
 import { Animated } from 'react-native';
 
-export default function Loading() {
+export default function Loading({ black }: { black?: boolean }) {
     const spin = new Animated.Value(0);
     const spinInterpolate = spin.interpolate({
         inputRange: [0, 1],
@@ -19,7 +19,7 @@ export default function Loading() {
 
     return (
         <Animated.View style={{ transform: [{ rotate: spinInterpolate }] }}>
-            <Loader size={20} color={colors.white} />
+            <Loader size={20} color={black ? colors.black : colors.white} />
         </Animated.View>
     );
 }

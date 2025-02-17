@@ -18,18 +18,24 @@ export function HistoryBlock() {
         queryFn: () => Axios.get('/bill')
     });
 
+    console.log(data?.data);
+
     return (
         <Block style={styles.block}>
             <Title variant="h2" text="Histórico" />
 
             {isFetching && (
                 <View style={{ alignItems: 'center' }}>
-                    <Loading />
+                    <Loading black />
                 </View>
             )}
 
+            {!isFetching && !data?.data.length && (
+                <Text>Nenhuma conta encontrada</Text>
+            )}
+
             {!isFetching &&
-                data?.data.map((item: any, index: number) => (
+                data?.data?.map((item: any, index: number) => (
                     <View key={item.idBill} style={{ gap: 16, marginTop: 8 }}>
                         <View
                             style={{

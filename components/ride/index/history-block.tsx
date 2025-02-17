@@ -23,12 +23,16 @@ export function HistoryBlock() {
 
             {isFetching && (
                 <View style={{ alignItems: 'center' }}>
-                    <Loading />
+                    <Loading black />
                 </View>
             )}
 
+            {!isFetching && !data?.data.length && (
+                <Text>Nenhuma carona encontrada</Text>
+            )}
+
             {!isFetching &&
-                data?.data.map((item: any, index: number) => (
+                data?.data?.map((item: any, index: number) => (
                     <View key={index} style={{ gap: 16, marginTop: 8 }}>
                         <View
                             style={{
