@@ -20,7 +20,7 @@ export default function RideViewScreen() {
 
     const methods = useForm<Ride>();
 
-    const { control, setValue, getValues, reset } = methods;
+    const { getValues, reset } = methods;
 
     const { data, isFetching } = useQuery<Ride>({
         queryKey: ['ride', id],
@@ -30,6 +30,7 @@ export default function RideViewScreen() {
 
     const { mutate } = useMutation({
         mutationFn: () => Axios.put(`/ride`, getValues()),
+
         onError: () => {
             Alert.alert('Falha', 'Falha ao salvar. Revertendo alteração.');
         },
