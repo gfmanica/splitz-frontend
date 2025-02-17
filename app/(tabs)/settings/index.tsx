@@ -5,23 +5,10 @@ import Button from '@/components/ui/button';
 import { router } from 'expo-router';
 import { Block } from '@/components/ui/block';
 import { Screen } from '@/components/ui/screen';
-import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
-import { useState } from 'react';
-import { Axios } from '@/lib/axios';
 
-type UserData = {
-    id: string;
-    email: string;
-    name: string;
-    expiredAt: number;
-};
 
 export default function SettingsScreen() {
-    const [userData, setUserData] = useState<UserData>(
-        jwtDecode(String(Axios.defaults.headers.common['Authorization']))
-    );
-
+    
     return (
         <Screen>
             <Block>
@@ -31,10 +18,10 @@ export default function SettingsScreen() {
                     </View>
 
                     <View>
-                        <Text>{userData?.name || 'Nome do Usuário'}</Text>
+                        <Text>Gabriel Felipe Manica</Text>
 
                         <Text style={styles.emailText}>
-                            {userData?.email || 'email@exemplo.com'}
+                            gabrielfelipemanica@gmail.com
                         </Text>
                     </View>
                 </View>

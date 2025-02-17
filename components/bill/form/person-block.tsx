@@ -12,6 +12,7 @@ import { NumberField } from '@/components/ui/number-field';
 export function PersonBlock() {
     const {
         control,
+        getValues,
         formState: { errors }
     } = useFormContext<any>();
     const { fields, append, remove } = useFieldArray({
@@ -19,94 +20,119 @@ export function PersonBlock() {
         name: 'payments'
     });
 
+    const rideData = getValues();
     const filteredFields = fields.filter((item: any) => item.fgCustomPayment);
+    const nonCustomFields = fields.filter((item: any) => !item.fgCustomPayment);
+
+    console.log(fields);
+
+    const handleAddPayment = () => {
+        if (filteredFields.length < rideData.qtPerson) {
+            if (nonCustomFields.length > 0) {
+                remove(fields.indexOf(nonCustomFields[0]));
+            }
+            append({
+                dsPerson: '',
+                vlPayment: 0,
+                fgCustomPayment: true
+            });
+        }
+    };
 
     return (
         <Block>
             <View style={styles.titleTextContainer}>
                 <Title variant="h2" text="Separar por pessoa" />
+
                 <ButtonUi
                     buttonStyle={styles.titleAddButton}
                     icon={<Plus size={28} color={colors.white} />}
-                    onPress={() =>
-                        append({
-                            dsPerson: '',
-                            vlPayment: 0,
-                            fgCustomPayment: true
-                        })
-                    }
+                    onPress={handleAddPayment}
                 />
             </View>
 
-            {filteredFields.map((field, index) => (
-                <View key={field.id} style={{ marginBottom: 16 }}>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            gap: 16,
-                            alignItems: 'flex-start'
-                        }}
-                    >
-                        <View style={{ gap: 8, flex: 1 }}>
-                            <Text>Nome</Text>
-                            <Controller
-                                control={control}
-                                name={`payments.${index}.dsPerson`}
-                                render={({ field: { value, onChange } }) => (
-                                    <TextInput
-                                        style={styles.textInput}
-                                        value={value}
-                                        onChangeText={onChange}
-                                    />
-                                )}
-                            />
-                            {(errors.payments as any)?.[index]?.dsPerson && (
-                                <Text style={styles.errorText}>
-                                    {String(
-                                        (errors.payments as any)[index].dsPerson
-                                            .message
-                                    )}
-                                </Text>
-                            )}
-                        </View>
-                        <View style={{ gap: 8, flex: 1 }}>
-                            <Text>Valor</Text>
-                            <Controller
-                                control={control}
-                                name={`payments.${index}.vlPayment`}
-                                render={({ field: { value, onChange } }) => (
-                                    <NumberField
-                                        style={styles.textInput}
-                                        value={value}
-                                        onChange={onChange}
-                                    />
-                                )}
-                            />
-                            {(errors.payments as any)?.[index]?.vlPayment && (
-                                <Text style={styles.errorText}>
-                                    {String(
-                                        (errors.payments as any)[index]
-                                            .vlPayment.message
-                                    )}
-                                </Text>
-                            )}
-                        </View>
+            {fields.map((field: any, index) => {
+                if (!field.fgCustomPayment) {
+                    return null;
+                }
 
-                        <View style={{ marginTop: 32 }}>
-                            <Button
-                                unstyled
-                                onPress={() => remove(index)}
-                                icon={
-                                    <Trash
-                                        color={colors.primary[300]}
-                                        size={24}
-                                    />
-                                }
-                            />
+                return (
+                    <View key={field.id} style={{ marginBottom: 16 }}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                gap: 16,
+                                alignItems: 'flex-start'
+                            }}
+                        >
+                            <View style={{ gap: 8, flex: 1 }}>
+                                <Text>Nome</Text>
+                                <Controller
+                                    control={control}
+                                    name={`payments.${index}.dsPerson`}
+                                    render={({
+                                        field: { value, onChange }
+                                    }) => (
+                                        <TextInput
+                                            style={styles.textInput}
+                                            value={value}
+                                            onChangeText={onChange}
+                                        />
+                                    )}
+                                />
+                                {(errors.payments as any)?.[index]
+                                    ?.dsPerson && (
+                                    <Text style={styles.errorText}>
+                                        {String(
+                                            (errors.payments as any)[index]
+                                                .dsPerson.message
+                                        )}
+                                    </Text>
+                                )}
+                            </View>
+                            <View style={{ gap: 8, flex: 1 }}>
+                                <Text>Valor</Text>
+                                <Controller
+                                    control={control}
+                                    name={`payments.${index}.vlPayment`}
+                                    render={({
+                                        field: { value, onChange }
+                                    }) => (
+                                        <NumberField
+                                            style={styles.textInput}
+                                            value={value}
+                                            onChange={onChange}
+                                            max={rideData.vlBill}
+                                        />
+                                    )}
+                                />
+                                {(errors.payments as any)?.[index]
+                                    ?.vlPayment && (
+                                    <Text style={styles.errorText}>
+                                        {String(
+                                            (errors.payments as any)[index]
+                                                .vlPayment.message
+                                        )}
+                                    </Text>
+                                )}
+                            </View>
+
+                            <View style={{ marginTop: 32 }}>
+                                <Button
+                                    unstyled
+                                    onPress={() => remove(index)}
+                                    icon={
+                                        <Trash
+                                            color={colors.primary[300]}
+                                            size={24}
+                                        />
+                                    }
+                                />
+                            </View>
                         </View>
                     </View>
-                </View>
-            ))}
+                );
+            })}
         </Block>
     );
 }

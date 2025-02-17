@@ -11,20 +11,24 @@ type NumberField = Omit<
 > & {
     onChange: (value: string | number) => void;
     value: string | number;
+    max?: number;
 };
 
-export function NumberField({ value, onChange, ...rest }: NumberField) {
+export function NumberField({ value, onChange, max, ...rest }: NumberField) {
     return (
         <TextInput
             keyboardType="numeric"
             {...rest}
             value={String(value).replace('.', ',')}
             onChangeText={(text) => {
-                if (text.endsWith(',') || text.endsWith('.')) {
-                    onChange(text);
-                } else {
-                    onChange(Number(text.replace(',', '.')));
+                let newValue =
+                    text.endsWith(',') || text.endsWith('.')
+                        ? text
+                        : Number(text.replace(',', '.'));
+                if (typeof newValue !== 'string' && max && newValue > max) {
+                    newValue = max;
                 }
+                onChange(newValue);
             }}
         />
     );

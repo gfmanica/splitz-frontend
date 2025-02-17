@@ -82,3 +82,34 @@ export const rideSchema = z
     );
 
 export type RideFormValues = z.infer<typeof rideSchema>;
+
+export const billSchema = z.object({
+    idBill: z.number().optional(),
+    dsBill: z.string().min(1, 'Nome é obrigatório'),
+    vlBill: z.number().min(0.01, 'Valor deve ser no mínimo 0,01'),
+    qtPerson: z.number().min(0.01, 'Quantidade deve ser no mínimo 0,01'),
+    payments: z.array(
+        z
+            .object({
+                idBillPayment: z.number().optional(),
+                fgPayed: z.boolean().optional(),
+                fgCustomPayment: z.boolean().optional(),
+                dsPerson: z.string().min(1, 'Nome da pessoa é obrigatório'),
+                vlPayment: z.number()
+            })
+            .refine(
+                (data) => {
+                    if (data.fgCustomPayment) {
+                        return data.vlPayment > 0;
+                    }
+                    return true;
+                },
+                {
+                    message: 'Valor deve ser no mínimo 0,01',
+                    path: ['vlPayment']
+                }
+            )
+    )
+});
+
+export type BillFormValues = z.infer<typeof billSchema>;
