@@ -58,7 +58,10 @@ export function RideGrid({ save }: { save: () => void }) {
                                         >
                                             <Text>
                                                 {new Date(
-                                                    group.dtRide
+                                                    group.dtRide.replace(
+                                                        'Z',
+                                                        ''
+                                                    )
                                                 ).toLocaleDateString()}
                                             </Text>
                                         </View>
@@ -238,6 +241,7 @@ const styles = StyleSheet.create({
     },
     limitedHeightBlock: {
         maxHeight: 400,
+        minHeight: 200,
         overflow: 'hidden'
     }
 });
